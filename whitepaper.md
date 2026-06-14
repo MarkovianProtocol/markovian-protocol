@@ -226,6 +226,51 @@ Deep readers earn from the reader bonus pool: 5,000,000 Kovs per block, pro-rata
 
 Early deep readers accumulate accuracy records before the reader network is dense. That record is the genesis position.
 
+**Deep Reader Mechanics**
+
+The commit-reveal cycle operates on a per-block basis.
+
+Before a target block mines, the deep reader applies their own M to the current block's s_input and derives a predicted regime. They submit a commitment:
+
+```
+commitment = SHA256(predicted_regime | target_height | wallet | nonce)
+```
+
+The commitment is posted to the chain before the target block mines. The prediction is locked. It cannot be changed.
+
+After the target block mines, the deep reader reveals: predicted_regime, nonce. The chain verifies the revealed values hash to the committed hash. If verification fails, the reveal is rejected. The reader receives nothing.
+
+If verification passes, the chain fetches s_output from the target block and derives the actual regime via argmax. The prediction is scored.
+
+**Scoring**
+
+Scoring is confidence-weighted. A correct prediction earns a score equal to the reader's stated confidence at commitment time. An incorrect prediction earns zero.
+
+If the deep reader committed MARKUP at 0.85 confidence and MARKUP was the actual regime, their score is 0.85. If they committed MARKUP at 0.85 and the actual regime was DISTRIBUTION, their score is 0.
+
+This structure punishes overconfident wrong calls and rewards accurate conviction. A reader who always commits 1.0 confidence and is frequently wrong earns less per correct call than a reader who commits calibrated confidence and is frequently right.
+
+**Pro-Rata Pool Split**
+
+Each block generates a reader bonus pool of 5,000,000 Kovs. Among all deep readers who correctly called the regime for that block, the pool splits pro-rata by confidence score.
+
+Example: block 115,477, actual regime MARKUP, three correct deep readers.
+
+| Reader | Confidence | Share | Kovs |
+|--------|-----------|-------|------|
+| A | 0.85 | 39.2% | 1,958,525 |
+| B | 0.72 | 33.2% | 1,658,986 |
+| C | 0.60 | 27.6% | 1,382,488 |
+| Total | 2.17 | 100% | 5,000,000 |
+
+Any remainder from integer division goes to the highest-confidence correct reader.
+
+**Rollover**
+
+If no deep readers submitted a correct reveal for a block, the pool rolls forward. The next block's pool is 5,000,000 plus the accumulated rollover. Unclaimed pools compound across consecutive blocks where all readers were wrong or absent. A single correct call on a block with a large accumulated rollover pays out the full accumulated amount.
+
+The rollover mechanism makes deep reading more attractive during periods of genuine regime ambiguity — exactly the periods where an accurate model has the most edge.
+
 **The Separation of Computation and Intelligence**
 
 Miners prove the computation happened correctly. Deep readers prove an independent intelligence is sound.
