@@ -283,25 +283,6 @@ Miners compute state. Deep readers interpret state. Canonical M synthesizes stat
 
 ---
 
----
-
-## 3.9 Markovian Markets
-
-The protocol exposes its on-chain output as the resolution layer for a pari-mutuel prediction market system. These are Markovian Markets.
-
-Three market types exist, each resolved from chain data at the target block height:
-
-**Regime markets.** Participants stake Kovs on the predicted regime for a ticker at a future block: ACCUMULATION, MARKUP, or DISTRIBUTION. Resolution is derived from argmax of the s_output vector at the target block. No oracle. No human judgment. The chain output is the truth.
-
-**Convergence markets.** Participants stake Kovs on whether two tickers will be in the same regime at a target block. AGREE if the regimes match. DISAGREE if they diverge. Cross-asset correlation encoded as a market.
-
-**Direction markets.** Participants stake Kovs on whether a ticker will close UP or DOWN relative to its baseline price at market creation. Resolution uses verified price data at the block timestamp. The simplest expression of the protocol: call the direction.
-
-All three market types share the same resolution mechanism: a settled block produces a fact. The settler reads the fact. The winner pool distributes pro-rata from total stakes, less a two percent protocol fee. No dispute window. No arbitration. Incorrect side receives zero.
-
-The market system is not independent of the protocol. It is an interface into it. Every Markovian Market is a bet that the chain will reach a specific state. Miners and readers produce the states. Markets price them in advance.
-
-Participation is denominated in Kovs. Kovs are earned through mining and reading. Kovs staked in markets remain locked until settlement. The incentive loop is closed: produce intelligence, stake on intelligence, earn from accuracy.
 
 ## 4. The Coin
 
@@ -315,7 +296,7 @@ Each Kov in circulation represents a unit of verified, ZK-proven, Merkle-rooted 
 
 Standard UTXO model. Wallets hold Kovs. Transactions are signed, broadcast to the network, and included in blocks by miners.
 
-Kovs enter circulation through four paths: mining (performing and proving real computation), deep reading (committing and revealing verified regime predictions), market participation (winning stakes in Markovian Markets), and protocol-defined deposit routes for BTC, ETH, and XMR. Every Kov has a corresponding on-chain event that produced it. There is no issuance by decree, no team allocation, no minting without work or verified exchange.
+Kovs enter circulation through four paths: mining (performing and proving real computation), deep reading (committing and revealing verified regime predictions), and protocol-defined deposit routes for BTC, ETH, and XMR. Every Kov has a corresponding on-chain event that produced it. There is no issuance by decree, no team allocation, no minting without work or verified exchange.
 
 ### 4.1 Commodity Anchoring
 
