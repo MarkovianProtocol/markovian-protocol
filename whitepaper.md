@@ -315,6 +315,8 @@ Each Kov in circulation represents a unit of verified, ZK-proven, Merkle-rooted 
 
 Standard UTXO model. Wallets hold Kovs. Transactions are signed, broadcast to the network, and included in blocks by miners.
 
+Kovs enter circulation through four paths: mining (performing and proving real computation), deep reading (committing and revealing verified regime predictions), market participation (winning stakes in Markovian Markets), and protocol-defined deposit routes for BTC, ETH, and XMR. Every Kov has a corresponding on-chain event that produced it. There is no issuance by decree, no team allocation, no minting without work or verified exchange.
+
 ### 4.1 Commodity Anchoring
 
 The Markovian Protocol models economic regime transitions driven by real commodity flows. Oil supply shocks trigger distribution regimes. Gold accumulation signals risk-off markup. Copper expansion precedes economic growth phases. The protocol measures these transitions directly.
