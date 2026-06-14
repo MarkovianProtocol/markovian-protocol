@@ -1,9 +1,13 @@
 """
-Markovian Protocol - Miner v0.2
+Markovian Protocol - Miner v0.3
 
 Proof-of-Intelligence miner. Polls /tip for chain state, computes
 Markov state transitions as work, submits ZK-proven blocks to the
 public node at api.quantsynth.net.
+
+Light read bundled: after every accepted block, miner auto-classifies
+the regime from s_output and submits a read. No API keys required.
+Pure local math on top of work already done.
 
 Requirements:
     pip install requests numpy py_ecc
@@ -34,6 +38,8 @@ from block_schema import (
 NODE_URL      = 'https://api.quantsynth.net'   # public bootstrap node
 MINER_ADDRESS = 'YOUR_MKV_ADDRESS_HERE'        # replace with your address
 LOG_INTERVAL  = 500
+REGIMES       = ['ACCUMULATION', 'MARKUP', 'DISTRIBUTION']
+READER_BONUS  = 5_000_000   # reserved per block for deep reader payouts (Phase 2)
 
 
 # ── Node Communication ────────────────────────────────────────────────────────
@@ -65,6 +71,31 @@ def submit_block(block: Block) -> dict:
         return {'ok': False, 'error': str(e)}
 
 
+# ── Regime Classification ─────────────────────────────────────────────────────
+
+def classify(s_vec) -> tuple:
+    idx = int(np.argmax(s_vec))
+    return REGIMES[idx], round(float(s_vec[idx]), 4)
+
+
+def submit_light_read(block_hash: str, height: int,
+                      s_output, wallet: str) -> dict:
+    regime, conf = classify(s_output)
+    payload = {
+        'wallet':       wallet,
+        'block_height': height,
+        'block_hash':   block_hash,
+        'reads':        {'master': {'regime': regime, 'confidence': conf}},
+        'mode':         'light',
+        'submitted_at': int(time.time()),
+    }
+    try:
+        r = requests.post(f'{NODE_URL}/submit_read', json=payload, timeout=5)
+        return r.json()
+    except Exception as e:
+        return {'ok': False, 'error': str(e)}
+
+
 # ── ZK Proof (Schnorr sigma, BN128 Pedersen) ─────────────────────────────────
 
 def generate_zk_proof(M: np.ndarray, s_input: np.ndarray,
@@ -76,7 +107,7 @@ def generate_zk_proof(M: np.ndarray, s_input: np.ndarray,
 # ── Miner Loop ────────────────────────────────────────────────────────────────
 
 def mine():
-    print('Markovian Protocol Miner v0.2')
+    print('Markovian Protocol Miner v0.3')
     print(f'Address:  {MINER_ADDRESS}')
     print(f'Node:     {NODE_URL}')
     print('─' * 60)
@@ -145,12 +176,17 @@ def mine():
                     elapsed       = time.time() - t_start
                     total_blocks += 1
                     total_kovs   += KOVS_PER_BLOCK
+                    blk_hash      = header.hash()
                     print(f'BLOCK ACCEPTED  height={next_height}')
-                    print(f'  Hash:    {header.hash()}')
+                    print(f'  Hash:    {blk_hash}')
                     print(f'  Nonce:   {nonce:,}')
                     print(f'  Time:    {elapsed:.2f}s')
                     print(f'  Kovs:    +{KOVS_PER_BLOCK:,}  (session total: {total_kovs:,})')
                     print(f'  MKV:     {total_kovs/100_000_000:.4f}')
+                    # Light read — regime classification bundled into every accepted block
+                    read_resp    = submit_light_read(blk_hash, next_height, s_output, MINER_ADDRESS)
+                    regime, conf = classify(s_output)
+                    print(f'  Regime:  {regime} ({conf:.2f})  read={read_resp.get("ok", False)}')
                 else:
                     # Block rejected — chain moved, re-poll tip
                     print(f'[REJECTED] {result.get("error")} — re-syncing...')
