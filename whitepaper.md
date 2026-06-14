@@ -360,6 +360,27 @@ Early miners earn Kovs at the lowest acquisition cost. The archive has not yet p
 
 MKV is priced by demand. Settled in Bitcoin. Earned by verified work.
 
+### 4.4 Treasury Reserve Floor
+
+Not all Kovs are equal.
+
+Three classes exist:
+
+**Mined Kovs.** Created by computational work. Backed by electricity, hardware, and time. No treasury claim.
+
+**Purchased Kovs.** Issued against BTC deposit at 1,000 Kovs per satoshi. Every satoshi received enters the protocol treasury and stays there until the corresponding Kovs are redeemed.
+
+**Faucet Kovs.** Promotional. Distributed to bootstrap participation. No treasury backing.
+
+The protocol treasury holds BTC at 1B7xDcg1kVSAP3EFumoNui2pmChd7q2t1w. This address is public. The balance is verifiable without trusting anyone.
+
+The floor is simple: while treasury reserves cover outstanding purchased Kovs, those Kovs are redeemable at the purchase rate. Treasury BTC divided by purchased Kovs outstanding equals the hard floor. If you bought at 1,000 Kovs per satoshi, the treasury holds that satoshi against your claim.
+
+Mined Kovs have no floor. Their value is what the market assigns. This is correct. Mined supply reflects earned value. Purchased supply is pegged by construction.
+
+The protocol does not guarantee a price. It guarantees a floor while reserves hold.
+
+
 ---
 
 ## 5. The Governance Layer
