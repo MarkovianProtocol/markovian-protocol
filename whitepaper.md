@@ -1,7 +1,7 @@
 # The Markovian Protocol
 ## A Proof-of-Intelligence Protocol Powered by Markov State Transition
 
-Version 0.9 — June 2026
+Version 1.0 - June 2026
 Author: Colin Winter
 
 ---
@@ -172,55 +172,67 @@ Reproducing the archive requires running the protocol from genesis. There is no 
 
 ---
 
-## 3.8 The Designer Layer
+## 3.8 The Reader Layer
 
 Miners produce the archive. They do not interpret it.
 
-Every valid block encodes a verified probability distribution across regime states for each covered instrument. That data is on-chain, ZK-proven, and permanent. What it means, requires a designer.
+**Light Reading**
 
-A designer is a network participant that consumes verified chain state, applies a model to it, and submits a signed regime classification to the protocol. The classification is recorded. The designer's accuracy over time is on-chain. Permanently.
+As of protocol v1.0, light reading is bundled into the mining work function. Every miner that submits an accepted block automatically classifies the resulting regime state and posts that classification on-chain. No additional setup. No external API. The classification is the argmax of s_output, computed locally from work already performed.
 
-**Run Matrix M**
+Every miner's light reads accumulate as a permanent on-chain participation record. Accuracy against the canonical regime compounds over time. The record cannot be revised.
 
-The minimum viable designer requires no custom model. It pulls the current block's s_output vector, takes the argmax, and submits the dominant regime state. The chain has already done the computation. The designer reports what it finds.
+**Deep Reading**
 
-Standard designers run on any hardware. No GPU. No LLM. A script and a network connection.
-
-**Build Matrix M**
-
-An advanced designer brings their own transition matrix.
+A deep reader brings their own transition matrix.
 
 The protocol's canonical M is an empirical model derived from fifteen years of market data, fitted via Hidden Markov estimation, and ratified by validator governance. It is the network's best current model. It is not the only model.
 
-An advanced designer trains their own M on their own data, at their own frequency, with their own asset coverage. They apply that matrix to chain state and commit a prediction before the target block mines. If their model is better, their accuracy record reflects it. If it is worse, the record reflects that too.
+A deep reader trains their own M on their own data and commits a signed regime prediction before the target block mines. The commitment is a hash of the predicted regime, target block height, and a secret nonce. After the block mines, the deep reader reveals the prediction. The chain compares it against the observed s_output and scores it.
 
-The chain does not evaluate the model. It records the output and scores the prediction.
+If the model outperforms the canonical M, the record reflects it. If it underperforms, the record reflects that too. The chain does not evaluate the model. It records the output and scores the prediction.
+
+**Reader Bonus Pool**
+
+Each block generates a reader bonus pool of 5,000,000 Kovs reserved for validated deep readers of that block. Deep readers who correctly called the regime split the pool pro-rata, weighted by prediction confidence. There is no cap on the number of deep readers per block. The pool is fixed per block. The share is smaller as more deep readers participate.
+
+Total Kov issuance per block: 50,000,000 to the miner. Up to 5,000,000 distributed to validated deep readers. A miner who also participates as a deep reader receives both.
+
+**Canonical M**
+
+The canonical M is not a public participant role. It is an institutional access tier.
+
+The protocol operates a synthesis layer combining verified chain state, archive depth, and multi-model regime signals into a unified market intelligence output. This layer is not open to the public network. It runs on protocol infrastructure.
+
+Institutional buyers and quantitative funds access canonical M via a credentialed API, priced in BTC. Every output carries a ZK proof committing to the inputs used, the models applied, and the execution trace. Buyers receive the signal and the proof.
+
+The public network produces the archive. Canonical M produces the product.
 
 **The Tournament**
 
-Ten designers with ten independent models submitting regime reads on the same block produces a new signal: convergence. When independent models running different M matrices agree on MARKUP, the confidence is not the confidence of a single model. It is the confidence of a distributed computation that arrived at the same conclusion from different starting points.
+Multiple deep readers applying independent models to the same block produce a convergence signal. When models trained on different datasets and different frequencies agree on MARKUP, the confidence is not the confidence of one model. It is the confidence of a distributed computation that arrived at the same conclusion from different starting points.
 
-Divergence is equally informative. A split read signals genuine regime ambiguity. The spread between designer agreement and disagreement becomes a confidence metric available to any downstream system.
+Divergence is equally informative. A split read across deep readers signals genuine regime ambiguity. The spread between agreement and disagreement becomes a confidence metric available to any downstream system.
 
-The probability structure is concrete. If each designer operates independently and carries a 20% individual error rate, ten designers converging on the same regime has a combined false-convergence probability below 0.20^10 — less than one in ten billion. The signal is not ten opinions. It is a distributed computation with a falsifiable error bound.
+The probability structure is concrete. If each deep reader operates independently and carries a 20% individual error rate, ten deep readers converging on the same regime has a combined false-convergence probability below 0.20^10. Less than one in ten billion. The signal is not ten opinions. It is a distributed computation with a falsifiable error bound.
 
-No existing data vendor produces this. Bloomberg provides a price. A quant fund's internal model produces a classification. Neither provides independently verified convergence across multiple models with permanent on-chain accuracy records. The tournament produces that signal as a byproduct of normal network operation. The tournament is open. The scoreboard is public. The results cannot be revised.
+The scoreboard is public. Every deep reader's accuracy record is on-chain and verifiable. It cannot be revised.
 
-**Designer Incentives**
+**Reader Incentives**
 
-Designers earn governance weight proportional to historical accuracy. Governance weight determines influence over matrix updates. An advanced designer that consistently outperforms the canonical M earns the right to propose improvements to it. The protocol's model of market structure is updated by those who have proven they understand it.
+Light readers accumulate a participation record. That record is the basis for advanced access tiers as the protocol matures.
 
-Phase 4 introduces archive licensing revenue. When institutional buyers access the archive, fees distribute to designers proportional to their contribution and accuracy. The incentive is a fee stream tied to demonstrated performance.
+Deep readers earn from the reader bonus pool: 5,000,000 Kovs per block, pro-rata on prediction accuracy. Deep readers that consistently outperform the canonical M earn governance weight proportional to their demonstrated edge. In Phase 5, archive licensing revenue distributes to network participants proportional to contribution and verified accuracy. The incentive is a fee stream tied to demonstrated performance, not declared intent.
 
-Early designers accumulate accuracy records before the designer network is deep. That record is the genesis position.
+Early deep readers accumulate accuracy records before the reader network is dense. That record is the genesis position.
 
 **The Separation of Computation and Intelligence**
 
-Miners prove the computation happened correctly. Designers prove the intelligence is sound.
+Miners prove the computation happened correctly. Deep readers prove an independent intelligence is sound.
 
-The two claims are independent. A miner with perfect ZK proofs and no understanding of markets produces valid blocks. A designer with a superior model produces accurate predictions. The protocol needs both. Neither replaces the other.
+The two claims are independent. A miner with perfect ZK proofs and no understanding of markets produces valid blocks. A deep reader with a superior model produces accurate predictions. The protocol needs both. Neither replaces the other.
 
-This is the complete architecture. Miners compute state. Designers interpret state. The archive accumulates both. The coin prices the combination.
+Miners compute state. Deep readers interpret state. Canonical M synthesizes state. The archive accumulates all three. The coin prices the combination.
 
 
 
