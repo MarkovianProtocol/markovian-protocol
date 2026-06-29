@@ -12,35 +12,37 @@
       "canonicalization": "json-sorted-compact",
       "signature": {
         "alg": "ed25519",
-        "key_id": "ed25519:291c92faeaf4ccdf8d24fae91af8fc561ac8118b2291dc678750327b61d45d23",
+        "key_id": "ed25519:3e01b81b1a8c0cfabf9fd5b185a701fb1c9791a351ed6964ee1398d8eb94cefb",
         "canonicalization": "json-sorted-compact",
-        "sig": "ADEoD20923FVLdhHljk66X3GGskaDSzdAB+KD7ERnk3q13sds58D4zpg1BBXLoXpONCoggLnS/6JuSd4Y1FDAg=="
+        "sig": "J925yIlbPPn/QiYzXhHmhGW0gqreSODZo7ZOFqnMcf9xu6GlQw82TOjVWUXWSmrEQhEX/6vwooDRu1sQTtY8Cg=="
       },
       "markovian-provenance/v1": {
         "schema": "markovian-provenance/v1",
-        "merkle_root": "c2831ae794c8eb1db10a5719557e20913fab7e14938b2a8251596b3c67345818",
+        "merkle_root": "6a5094ce2f085a1f08723bc1dc1615578c32ce55304e5dbdaceb823954fcec74",
         "data_hash": "990383f407cbfbdc2c560b5398ac1fafc785c9094977696cff9c8eda9701412c",
-        "wallet": "anon49fc91bc2de0758f54020488e27a677e",
-        "zk_commitment": "[\"46697773896736873638708814734977895555261934225124689193793412927767968248\", \"6262105902095280789222011768738389723479015923198336437957029812117297011768\"]",
-        "block_height": 135205,
-        "stamped_at": "2026-06-29 15:49:18.572077+00:00",
-        "verify": "https://api.quantsynth.net/verify/c2831ae794c8eb1db10a5719557e20913fab7e14938b2a8251596b3c67345818",
+        "wallet": "anon5ab06469dba7c84c23916a4b0bb0a8d5",
+        "zk_commitment": "[\"16462596542825864966395870767049774176256784847506163223173584726595488532271\", \"6080604860614747028372146573313918375524717023502670706067083928808911637187\"]",
+        "block_height": 135239,
+        "stamped_at": "2026-06-29 16:23:33.743454+00:00",
+        "verify": "https://api.quantsynth.net/verify/6a5094ce2f085a1f08723bc1dc1615578c32ce55304e5dbdaceb823954fcec74",
         "attestation": "provenance-only; proves data was committed at this time, not that it is correct"
       },
       "reliability": {
-        "confidence": 0.78,
+        "type": "okf-reliability-v1",
+        "confidence": "HIGH",
+        "basis": "computed",
         "score": 0.78,
         "sources": 2,
-        "basis": "computed",
-        "freshness": "live",
-        "conflict": false,
+        "verified": true,
+        "vantage": "independent",
+        "freshness": {
+          "state": "fresh"
+        },
         "signals": {
           "signed": true,
           "corroborated": true,
           "fresh": true
         },
-        "verified": true,
-        "vantage": "independent",
         "assessed_at": "2026-06-29T16:00:05Z"
       }
     }

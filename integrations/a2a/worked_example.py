@@ -55,11 +55,18 @@ provenance = {
 
 # ---- axis 3: data quality (advisory; verified only if signed AND fresh AND corroborated AND no conflict) ----
 signals = {"signed": True, "corroborated": True, "fresh": True}
+# Shape aligned to dynamicfeed okf-reliability-v1 (validates green against their schema + validators):
+# confidence is the ordinal band (the number lives in score); freshness is an object; conflict omitted = no dispute.
 reliability = {
-    "confidence": 0.78, "score": 0.78, "sources": 2, "basis": "computed",
-    "freshness": "live", "conflict": False, "signals": signals,
-    "verified": all(signals.values()) and not False,
+    "type": "okf-reliability-v1",
+    "confidence": "HIGH",
+    "basis": "computed",
+    "score": 0.78,
+    "sources": 2,
+    "verified": all(signals.values()),
     "vantage": "independent",
+    "freshness": {"state": "fresh"},
+    "signals": signals,
     "assessed_at": "2026-06-29T16:00:05Z",
 }
 
@@ -102,5 +109,5 @@ print("axis 2 existence-in-time (markovian):", "VALID" if a2 else "FAIL",
 a3 = md["reliability"]["verified"]
 print("axis 3 data quality (advisory):", "verified=" + str(a3),
       "(signed+fresh+corroborated+no-conflict)")
-print("\nartifact written: ~/markovian/a2a/worked_example_artifact.json")
+print("\nartifact written: worked_example_artifact.json")
 print("signed bytes never include axes 2/3 -> artifact hash is stable across verifiers")
