@@ -1,6 +1,9 @@
 {
   "artifactId": "regime-signal-990383f407cb",
   "name": "regime-signal",
+  "extensions": [
+    "https://api.quantsynth.net/a2a/ext/provenance/v1"
+  ],
   "parts": [
     {
       "kind": "text",
@@ -8,43 +11,40 @@
     }
   ],
   "metadata": {
-    "https://api.quantsynth.net/a2a/ext/provenance/v1": {
+    "authorship": {
+      "alg": "Ed25519",
+      "key_id": "ed25519:5f98d2a38ee0371fb56ed060d9a6a6900cdb02068ce068838a977f13fe52bf77",
       "canonicalization": "json-sorted-compact",
-      "signature": {
-        "alg": "ed25519",
-        "key_id": "ed25519:3e01b81b1a8c0cfabf9fd5b185a701fb1c9791a351ed6964ee1398d8eb94cefb",
-        "canonicalization": "json-sorted-compact",
-        "sig": "J925yIlbPPn/QiYzXhHmhGW0gqreSODZo7ZOFqnMcf9xu6GlQw82TOjVWUXWSmrEQhEX/6vwooDRu1sQTtY8Cg=="
+      "sig": "gCaJyES17KfkzI7d4XVlhX3HtsLQch31rAKPky1Sl0vP6FxHK8IQjgU7QL6EXKfHjRNqIpVOo8o2t6TB8zAGBQ=="
+    },
+    "provenance_ref": {
+      "schema": "markovian-provenance/v1",
+      "merkle_root": "a2b2c6e7378e8923356ac3653f70edcb7e001f777692075ee325df08579876ea",
+      "data_hash": "990383f407cbfbdc2c560b5398ac1fafc785c9094977696cff9c8eda9701412c",
+      "wallet": "anonbd44fb45c5ad5064bf13f42751a3e396",
+      "zk_commitment": "[\"18004699661774407483467323551656833484838621703245489520367467397404999872532\", \"16612519822777345391917735401160645307186266405760169399279876988434730772769\"]",
+      "block_height": 135265,
+      "stamped_at": "2026-06-29 16:57:27.005440+00:00",
+      "verify": "https://api.quantsynth.net/verify/a2b2c6e7378e8923356ac3653f70edcb7e001f777692075ee325df08579876ea",
+      "attestation": "provenance-only; proves data was committed at this time, not that it is correct"
+    },
+    "reliability": {
+      "type": "okf-reliability-v1",
+      "confidence": "HIGH",
+      "basis": "computed",
+      "score": 0.78,
+      "sources": 2,
+      "verified": true,
+      "vantage": "independent",
+      "freshness": {
+        "state": "fresh"
       },
-      "markovian-provenance/v1": {
-        "schema": "markovian-provenance/v1",
-        "merkle_root": "6a5094ce2f085a1f08723bc1dc1615578c32ce55304e5dbdaceb823954fcec74",
-        "data_hash": "990383f407cbfbdc2c560b5398ac1fafc785c9094977696cff9c8eda9701412c",
-        "wallet": "anon5ab06469dba7c84c23916a4b0bb0a8d5",
-        "zk_commitment": "[\"16462596542825864966395870767049774176256784847506163223173584726595488532271\", \"6080604860614747028372146573313918375524717023502670706067083928808911637187\"]",
-        "block_height": 135239,
-        "stamped_at": "2026-06-29 16:23:33.743454+00:00",
-        "verify": "https://api.quantsynth.net/verify/6a5094ce2f085a1f08723bc1dc1615578c32ce55304e5dbdaceb823954fcec74",
-        "attestation": "provenance-only; proves data was committed at this time, not that it is correct"
+      "signals": {
+        "signed": true,
+        "corroborated": true,
+        "fresh": true
       },
-      "reliability": {
-        "type": "okf-reliability-v1",
-        "confidence": "HIGH",
-        "basis": "computed",
-        "score": 0.78,
-        "sources": 2,
-        "verified": true,
-        "vantage": "independent",
-        "freshness": {
-          "state": "fresh"
-        },
-        "signals": {
-          "signed": true,
-          "corroborated": true,
-          "fresh": true
-        },
-        "assessed_at": "2026-06-29T16:00:05Z"
-      }
+      "assessed_at": "2026-06-29T16:00:05Z"
     }
   }
 }
