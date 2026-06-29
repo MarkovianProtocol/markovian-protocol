@@ -21,7 +21,7 @@ which is what makes the edges tamper-evident.
 ```jsonc
 {
   "schema": "markovian-provenance/v1",
-  "parents": [ <ParentRef>, ... ],   // [] for a leaf node
+  "derived_from": [ <LineageRef>, ... ],   // [] for a leaf node
   "body_hash": "<sha256 hex of the actual content this stamp is about>",
   "produced_by": "<door label, e.g. a2a | cloudevents | c2pa | eas | vc | mcp>"
 }
@@ -31,12 +31,12 @@ which is what makes the edges tamper-evident.
 (the /stamp endpoint accepts a pre-computed `data_hash` passthrough). `merkle_root` and
 `zk_commitment` are produced by the protocol over the same committed bytes.
 
-Because `parents[]` is inside the pre-image, you cannot re-point or alter a parent without
+Because `derived_from[]` is inside the pre-image, you cannot re-point or alter a parent without
 changing `data_hash`, which changes `merkle_root`, which cascades to every descendant. A parent
 reference placed in an outer envelope wrapper (outside the pre-image) is a SOFT POINTER and is
 not valid for TRACE.
 
-## 2. ParentRef (the edge)
+## 2. LineageRef (the edge)
 
 Reference a parent by FULL identity, not a bare root (prevents cross-format confusion and lets
 TRACE validate node and edge in one pass).
@@ -66,7 +66,7 @@ will disagree. v1 PoC uses json-sorted-compact: UTF-8 JSON, `sort_keys=true`, se
 no insignificant whitespace. Production SHOULD migrate to DAG-CBOR (sorted keys, shortest ints,
 64-bit floats, no indefinite-length items) for cross-language stability.
 
-Multi-parent nodes MUST canonically order `parents` (byte-wise sort by `merkle_root`) BEFORE
+Multi-parent nodes MUST canonically order `derived_from` (byte-wise sort by `merkle_root`) BEFORE
 hashing, so the child hash is reproducible regardless of producer.
 
 ## 4. Carrying a node in a door
@@ -99,13 +99,13 @@ trace(root, store, seen = {}):
   node.anchored     = ( onchain.verified == true )                          # Bitcoin anchor
   node.block_height = onchain.block_height
   node.stamped_at   = onchain.stamped_at
-  node.parents      = []
+  node.derived_from      = []
 
-  for p in payload.parents:
+  for p in payload.derived_from:
     pv = GET /verify/{p.merkle_root}
     edge_verified = ( pv.data_hash == p.data_hash )   # claimed parent matches real parent content
     child = trace(p.merkle_root, store, seen)
-    node.parents.append({ relationship: p.relationship, edge_verified, node: child })
+    node.derived_from.append({ relationship: p.relationship, edge_verified, node: child })
 
   return node
 ```
@@ -113,7 +113,7 @@ trace(root, store, seen = {}):
 ## 6. Verification rules
 
 A node is VALID iff `hash_binds` AND `anchored`. An edge is VALID iff `edge_verified` (the parent's
-real on-chain `data_hash` equals the `data_hash` named in the child's ParentRef) AND the child node
+real on-chain `data_hash` equals the `data_hash` named in the child's LineageRef) AND the child node
 is valid. A lineage is VALID iff every node and every edge in the returned sub-DAG is valid.
 
 TRACE reports WHICH check failed per node/edge (bad node hash vs broken edge vs unconfirmed anchor),
@@ -124,9 +124,9 @@ the content. Provenance, not truth.
 ## 7. Safety
 
 - Cycle detection: abort if a root reappears on the current path. Content-addressing makes honest
-  cycles impossible, but a fabricated `parents[].merkle_root` could collide; treat any cycle as invalid.
+  cycles impossible, but a fabricated `derived_from[].merkle_root` could collide; treat any cycle as invalid.
 - Depth cap: default max walk depth 256; return `truncated: true` + frontier roots beyond it.
-- Fan-out cap: bound parents per node. Cost is O(nodes x verify_cost); unbounded walking is a DoS vector.
+- Fan-out cap: bound derived_from per node. Cost is O(nodes x verify_cost); unbounded walking is a DoS vector.
 
 ## 8. Temporal partial order (free property)
 
@@ -138,7 +138,7 @@ hardens on confirmation.
 ## 9. Limitations and open problems (named honestly)
 
 - DATA AVAILABILITY (the main open problem). The walk needs each node's traceable payload to read
-  its parents and recompute its hash. The chain stores only the root and `data_hash`, not the
+  its derived_from and recompute its hash. The chain stores only the root and `data_hash`, not the
   payload. A node is walkable only if its payload is available: carried in the door envelope,
   bundled with the artifact, or served by a resolver keyed by root. A node whose payload is missing
   can still be verified as a frontier leaf (anchor confirmed, and the child's claimed parent

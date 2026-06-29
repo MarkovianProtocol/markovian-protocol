@@ -44,7 +44,7 @@ content_A = {"type": "regime-signal", "ticker": "QQQ", "regime": "DISTRIBUTION",
              "asof": "2026-06-29T16:00:00Z", "producer": "agent-alpha"}
 payload_A = {
     "schema": "markovian-provenance/v1",
-    "parents": [],
+    "derived_from": [],
     "body_hash": hashlib.sha256(canon(content_A)).hexdigest(),
     "produced_by": "a2a",
 }
@@ -67,7 +67,7 @@ content_B = {"type": "trade-decision", "ticker": "QQQ", "action": "REDUCE",
              "asof": "2026-06-29T16:05:00Z", "producer": "agent-beta"}
 payload_B = {
     "schema": "markovian-provenance/v1",
-    "parents": [
+    "derived_from": [
         {"merkle_root": recA["merkle_root"], "data_hash": recA["data_hash"],
          "schema": "markovian-provenance/v1", "relationship": "derivedFrom"}
     ],
@@ -114,13 +114,13 @@ def trace(root, store, seen=None):
         "hash_binds": hashlib.sha256(canon(payload)).hexdigest() == v.get("data_hash"),
         "anchored": v.get("verified") is True,
         "block_height": v.get("block_height"),
-        "parents": [],
+        "derived_from": [],
     }
-    for p in payload["parents"]:
+    for p in payload["derived_from"]:
         pv = httpx.get(f"{API}/verify/{p['merkle_root']}", headers=UA, timeout=20).json()
         edge_verified = pv.get("data_hash") == p["data_hash"]
         child = trace(p["merkle_root"], store, seen)
-        node["parents"].append({"relationship": p["relationship"], "edge_verified": edge_verified, "node": child})
+        node["derived_from"].append({"relationship": p["relationship"], "edge_verified": edge_verified, "node": child})
     return node
 
 resolved = trace(recB_rt["merkle_root"], store)
@@ -129,7 +129,7 @@ resolved = trace(recB_rt["merkle_root"], store)
 def collect(n, nodes, edges, doors):
     nodes.append(n["root"]); doors.add(n["door"])
     ok = n["hash_binds"] and n["anchored"]
-    for e in n["parents"]:
+    for e in n["derived_from"]:
         edges.append(e["edge_verified"])
         ok = ok and e["edge_verified"] and collect(e["node"], nodes, edges, doors)
     return ok
@@ -146,7 +146,7 @@ print()
 def show(n, indent=0):
     pad = "  " * indent
     print(f"{pad}- {n['door']:<11} {n['root'][:24]}...  hash_binds={n['hash_binds']} anchored={n['anchored']} block={n['block_height']}")
-    for e in n["parents"]:
+    for e in n["derived_from"]:
         print(f"{pad}    edge[{e['relationship']}] verified={e['edge_verified']}")
         show(e["node"], indent + 2)
 show(resolved)
@@ -162,7 +162,7 @@ import copy
 print()
 print("=== tamper test (re-point B's parent in the carried payload only) ===")
 forged = copy.deepcopy(payloadB_rt)
-forged["parents"][0]["merkle_root"] = "deadbeef" * 8     # forge the parent reference
+forged["derived_from"][0]["merkle_root"] = "deadbeef" * 8     # forge the parent reference
 onchain_B = httpx.get(f"{API}/verify/{recB_rt['merkle_root']}", headers=UA, timeout=20).json()
 binds_after_tamper = hashlib.sha256(canon(forged)).hexdigest() == onchain_B.get("data_hash")
 print("forged parent ref -> hash_binds:", binds_after_tamper, "(expected False)")
