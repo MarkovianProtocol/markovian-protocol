@@ -18,10 +18,10 @@ It is the A2A envelope for the same `markovian-provenance/v1` object used in eve
 
 ## 2. Terminology
 
-- **Stamp** — a public Markovian commit produced by `POST /stamp`: a Merkle root (`sha256(data_hash:salt:wallet)`), a BN128 **Pedersen** commitment, a chain `block_height`, and a timestamp. External stamps carry a Pedersen commitment ONLY — no validity proof is generated or required.
-- **Attestation** — the `markovian-provenance/v1` provenance object (Section 4) carried over A2A.
-- **Verifier** — the public Markovian endpoint (`https://api.quantsynth.net/verify/<merkle_root>`). It is an **existence + commitment lookup** (returns `type:external_stamp, verified:true`), NOT a validity proof.
-- **Subject** — the dataset or output the attestation is about; bound by `data_hash`.
+- **Stamp**, a public Markovian commit produced by `POST /stamp`: a Merkle root (`sha256(data_hash:salt:wallet)`), a BN128 **Pedersen** commitment, a chain `block_height`, and a timestamp. External stamps carry a Pedersen commitment ONLY, no validity proof is generated or required.
+- **Attestation**, the `markovian-provenance/v1` provenance object (Section 4) carried over A2A.
+- **Verifier**, the public Markovian endpoint (`https://api.quantsynth.net/verify/<merkle_root>`). It is an **existence + commitment lookup** (returns `type:external_stamp, verified:true`), NOT a validity proof.
+- **Subject**, the dataset or output the attestation is about; bound by `data_hash`.
 
 ## 3. Declaring support (Agent Card)
 
@@ -129,7 +129,7 @@ This is the load-bearing rule. A `verified:true` attestation asserts **time of r
 
 ## 12. References
 
-- A2A v1.0.0 specification — extensions (`AgentExtension` in `AgentCapabilities`, `A2A-Extensions` activation header), https://a2a-protocol.org/latest/specification/ and https://a2a-protocol.org/latest/topics/extensions/
+- A2A v1.0.0 specification, extensions (`AgentExtension` in `AgentCapabilities`, `A2A-Extensions` activation header), https://a2a-protocol.org/latest/specification/ and https://a2a-protocol.org/latest/topics/extensions/
 - `sigstore/sigstore-a2a` (precedent: keyless signing + provenance bundles on Agent Cards), https://github.com/sigstore/sigstore-a2a
 - Markovian × ERC-8004 integration spec (same `markovian-provenance/v1` object).
 - W3C Verifiable Credentials Data Model 2.0 (provenance-not-truth principle).

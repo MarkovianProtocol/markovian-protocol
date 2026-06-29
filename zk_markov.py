@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-zk_markov.py — Zero-knowledge proof for Markov state transitions.
+zk_markov.py, Zero-knowledge proof for Markov state transitions.
 
 Proves: s_out = M.T^N @ s_in without revealing s_in or s_out.
 
@@ -12,9 +12,9 @@ Approach:
   - Fiat-Shamir non-interactive transform
 
 Math:
-  SCALE_S = 10^9  — scale for probability values (0.70 → 700_000_000)
-  M_DENOM = 20    — M.T values * 20 = small exact integers
-  M_INT[j,k]      — M.T[j,k] * 20, exact integers in {1,2,3,4,5,13,14,15}
+  SCALE_S = 10^9 , scale for probability values (0.70 → 700_000_000)
+  M_DENOM = 20   , M.T values * 20 = small exact integers
+  M_INT[j,k]     , M.T[j,k] * 20, exact integers in {1,2,3,4,5,13,14,15}
 
   One step exact relation:
     20 * s_out_int[j] = sum_k M_INT[j,k] * s_in_int[k]  ±TOLERANCE
@@ -170,7 +170,7 @@ class StepProof:
     """
     C_in:    list   # 3 EC points (public commitments to s_in)
     C_out:   list   # 3 EC points (public commitments to s_out)
-    epsilons: list  # [epsilon[0], epsilon[1], epsilon[2]] — rounding corrections
+    epsilons: list  # [epsilon[0], epsilon[1], epsilon[2]], rounding corrections
     proofs:  list   # 3 Schnorr proofs (one per output component)
 
 

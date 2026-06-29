@@ -1,5 +1,5 @@
 """
-demo_consumer — REAL A2A client that drives the Markovian provenance door end-to-end.
+demo_consumer, REAL A2A client that drives the Markovian provenance door end-to-end.
 
 Single command:  /Users/colinwinter/neo_env/bin/python3 demo_consumer.py
 It starts demo_agent.py (127.0.0.1:8090), sends an A2A task with the A2A-Extensions
@@ -126,7 +126,7 @@ async def run():
 
         print("\n" + "=" * 60)
         if ok and tamper_caught and tamper2_caught:
-            print("RESULT: PASS  — A2A artifact carried a real Markovian stamp,")
+            print("RESULT: PASS , A2A artifact carried a real Markovian stamp,")
             print(f"        merkle_root={obj['merkle_root']}")
             print(f"        block_height={obj['block_height']}  stamp_verified=True  binding_ok=True")
             print("        tamper rejected on both bytes and data_hash.")

@@ -94,7 +94,7 @@ def settle_block(conn, block_height: int) -> str:
     try:
         actual_regime = get_block_regime(block_height)
     except Exception as e:
-        return f'block {block_height}: chain lookup failed — {e}'
+        return f'block {block_height}: chain lookup failed, {e}'
 
     # Get all revealed deep reads for this block
     cur.execute(
@@ -106,7 +106,7 @@ def settle_block(conn, block_height: int) -> str:
     reveals = cur.fetchall()
 
     if not reveals:
-        # No deep readers — roll pool forward
+        # No deep readers, roll pool forward
         next_height = block_height + 1
         cur.execute(
             '''INSERT INTO reader_bonus_pool (block_height, pool_kovs, rollover_kovs, rolled_from)
@@ -137,7 +137,7 @@ def settle_block(conn, block_height: int) -> str:
         )
 
     if not correct:
-        # All wrong — roll pool forward
+        # All wrong, roll pool forward
         next_height = block_height + 1
         cur.execute(
             '''INSERT INTO reader_bonus_pool (block_height, pool_kovs, rollover_kovs, rolled_from)
@@ -206,7 +206,7 @@ def settle_block(conn, block_height: int) -> str:
 
 
 def run():
-    print('Reader Pool Settler — starting')
+    print('Reader Pool Settler, starting')
     tip = get_chain_tip()
     current_height = tip['height']
     settle_before  = current_height - REVEAL_WINDOW

@@ -2,9 +2,9 @@
 Markovian Markets Settler v2
 
 Handles three market types:
-  regime      — ACCUMULATION / MARKUP / DISTRIBUTION, resolved from chain s_output
-  convergence — AGREE / DISAGREE, resolved from two tickers at same block
-  direction   — UP / DOWN, resolved from Tiingo price vs baseline at creation
+  regime     , ACCUMULATION / MARKUP / DISTRIBUTION, resolved from chain s_output
+  convergence, AGREE / DISAGREE, resolved from two tickers at same block
+  direction  , UP / DOWN, resolved from Tiingo price vs baseline at creation
 """
 
 import json
@@ -100,7 +100,7 @@ def pari_mutuel_payout(conn, market: dict, actual_outcome: str) -> str:
             (market_id, actual_outcome, total_pool, 0, total_pool, 0, now)
         )
         conn.commit()
-        return f'0 winners — {total_pool:,} Kovs to protocol'
+        return f'0 winners, {total_pool:,} Kovs to protocol'
 
     total_stake = sum(int(p['kovs_staked']) for p in winners)
     total_paid  = 0
@@ -166,14 +166,14 @@ def settle_market(conn, market: dict) -> str:
             label          = ticker
 
     except Exception as e:
-        return f'market {market_id}: lookup failed — {e}'
+        return f'market {market_id}: lookup failed, {e}'
 
     result = pari_mutuel_payout(conn, market, actual_outcome)
     return f'market {market_id} ({label}): outcome={actual_outcome}, {result}'
 
 
 def run():
-    print('Market Settler v2 — starting')
+    print('Market Settler v2, starting')
     try:
         tip = get_chain_tip()['height']
     except Exception as e:

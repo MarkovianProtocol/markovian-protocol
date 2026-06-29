@@ -44,15 +44,15 @@ https://modelcontextprotocol.io/specification/2025-11-25/server/tools
 
 Four candidate homes for `markovian-provenance/v1`:
 
-1. **A `markovian_stamp` tool** — agent calls it, gets a stamp back. The stamp IS
+1. **A `markovian_stamp` tool**, agent calls it, gets a stamp back. The stamp IS
    the output, so it belongs in `structuredContent` (+ mirrored TextContent for
    back-compat). USE THIS as the active door.
-2. **`_meta` on any tool result** — provenance rides alongside another tool's
+2. **`_meta` on any tool result**, provenance rides alongside another tool's
    real output without polluting model-facing `content`. This is the convention
    that makes the OTHER N tools carry provenance. USE THIS as the standard.
-3. **A provenance resource** (`markovian://verify/{merkle_root}`) — addressable,
+3. **A provenance resource** (`markovian://verify/{merkle_root}`), addressable,
    re-fetchable proof object. Secondary, nice-to-have.
-4. `content[]` text/embedded-resource block — REJECTED as primary. Putting a hash
+4. `content[]` text/embedded-resource block, REJECTED as primary. Putting a hash
    blob in `content` dumps it into the LLM context where the model would try to
    reason over a cryptographic commitment. Provenance is machine metadata, not
    model fuel. `_meta` is the semantically correct home.
@@ -69,7 +69,7 @@ Four candidate homes for `markovian-provenance/v1`:
   in the stack. Any MCP client (Claude Desktop, Claude Code, any agent) gains a
   stamp capability with zero bespoke integration.
 
-- **(b) Provenance-on-tool-results convention** — a published rule that ANY MCP
+- **(b) Provenance-on-tool-results convention**, a published rule that ANY MCP
   server MAY attach the `markovian-provenance/v1` object to its tool results under
   a reverse-DNS `_meta` key. This is the actual standards contribution and the
   "N envelopes" move: it lets every tool result in the ecosystem carry verifiable
@@ -114,7 +114,7 @@ Why this split, justified against the real schema:
 Note: external stamps carry a BN128 Pedersen `zk_commitment` only. There is NO
 Schnorr proof and NO `zk_valid` field for external stamps. Do not add either.
 
-### 3.2 `markovian_stamp` tool — definition
+### 3.2 `markovian_stamp` tool, definition
 
 ```json
 {
@@ -162,7 +162,7 @@ state and burns 1 MKV; each call is a distinct on-chain event. `openWorldHint:tr
 because it reaches an external service. [CONFIRM ToolAnnotations fields against
 schema.ts] /server/tools
 
-### 3.3 `markovian_stamp` tool — result
+### 3.3 `markovian_stamp` tool, result
 
 The stamp is the output, so it goes in `structuredContent`, is mirrored as a
 JSON TextContent block (back-compat per spec), and is ALSO placed in `_meta`

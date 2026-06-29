@@ -132,7 +132,7 @@ def mine():
         # Get current M from node (respects governance updates)
         M, m_ver = get_matrix()
 
-        # Derive s from prev_hash — deterministic, no oracle
+        # Derive s from prev_hash, deterministic, no oracle
         # ZK circuit operates at N=2 (proven depth). PoW nonce provides work.
         ZK_N     = 2
         s_input  = extract_s_from_hash(prev_hash)
@@ -183,13 +183,13 @@ def mine():
                     print(f'  Time:    {elapsed:.2f}s')
                     print(f'  Kovs:    +{KOVS_PER_BLOCK:,}  (session total: {total_kovs:,})')
                     print(f'  MKV:     {total_kovs/100_000_000:.4f}')
-                    # Light read — regime classification bundled into every accepted block
+                    # Light read, regime classification bundled into every accepted block
                     read_resp    = submit_light_read(blk_hash, next_height, s_output, MINER_ADDRESS)
                     regime, conf = classify(s_output)
                     print(f'  Regime:  {regime} ({conf:.2f})  read={read_resp.get("ok", False)}')
                 else:
-                    # Block rejected — chain moved, re-poll tip
-                    print(f'[REJECTED] {result.get("error")} — re-syncing...')
+                    # Block rejected, chain moved, re-poll tip
+                    print(f'[REJECTED] {result.get("error")}, re-syncing...')
                 break
 
             nonce += 1

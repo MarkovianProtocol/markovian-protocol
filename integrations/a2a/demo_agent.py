@@ -1,5 +1,5 @@
 """
-demo_agent — a minimal REAL A2A agent (a2a-sdk 1.1.0) that carries Markovian provenance.
+demo_agent, a minimal REAL A2A agent (a2a-sdk 1.1.0) that carries Markovian provenance.
 
 - Declares the Markovian provenance extension in its AgentCard (capabilities.extensions[]).
 - On every task, produces an output, STAMPs it on the live Markovian chain (burns 1 MKV),

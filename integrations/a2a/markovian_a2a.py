@@ -1,5 +1,5 @@
 """
-markovian_a2a — reference wrapper for the Markovian × A2A provenance door.
+markovian_a2a, reference wrapper for the Markovian × A2A provenance door.
 
 One stamp, N envelopes. This module is the A2A envelope: it takes the live
 Markovian STAMP (POST /stamp, burns 1 MKV) and assembles the canonical

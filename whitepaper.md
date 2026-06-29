@@ -32,9 +32,9 @@ Nakamoto consensus is a well-understood mechanism. By making block production ex
 
 The work is not reused. SHA-256 hashing produces nothing of value beyond the security it purchases. Miners burn electricity, generate heat, and discard the outputs. The system functions because the waste is expensive enough to make attacks uneconomical. The incentive structure is sound. The output is not.
 
-Proof of Useful Work has been proposed as an alternative — mining that produces economically valuable computation as a byproduct of consensus. Prior attempts have failed on one of two grounds: the useful computation is not independently verifiable without trust, or the computation is insufficiently resistant to strategic gaming.
+Proof of Useful Work has been proposed as an alternative, mining that produces economically valuable computation as a byproduct of consensus. Prior attempts have failed on one of two grounds: the useful computation is not independently verifiable without trust, or the computation is insufficiently resistant to strategic gaming.
 
-The Markovian Protocol addresses both constraints. Markov state transition is deterministic — identical inputs produce identical outputs on any hardware. Zero-knowledge proofs make verification trustless and instantaneous. Difficulty is adjustable via transition depth N. The output is a probability distribution across economic regime states derived from an empirically fitted governance model.
+The Markovian Protocol addresses both constraints. Markov state transition is deterministic, identical inputs produce identical outputs on any hardware. Zero-knowledge proofs make verification trustless and instantaneous. Difficulty is adjustable via transition depth N. The output is a probability distribution across economic regime states derived from an empirically fitted governance model.
 
 ---
 
@@ -82,9 +82,9 @@ PoGO is non-deterministic by construction. Bittensor and PoUI are subjective by 
 
 The Markovian Protocol is built around a 3x3 stochastic transition matrix M encoding the probability of transitions between three economic regime states:
 
-- State 0: Accumulation — capital accumulation phase, low volatility, range-bound price action
-- State 1: Markup — directional price discovery, expanding participation, trend confirmation
-- State 2: Distribution — late-cycle behavior, deteriorating market internals, capital rotation out
+- State 0: Accumulation, capital accumulation phase, low volatility, range-bound price action
+- State 1: Markup, directional price discovery, expanding participation, trend confirmation
+- State 2: Distribution, late-cycle behavior, deteriorating market internals, capital rotation out
 
 M is published by the protocol. Every node holds an identical copy. Every miner uses the same matrix. There is no ambiguity in the validity condition.
 
@@ -103,11 +103,11 @@ Given M and s, the miner:
 3. Hashes the input string
 4. Checks whether the hash meets the current difficulty target
 
-The miner iterates nonce values until a valid hash is found. This is the search problem — identical in structure to Bitcoin mining, different in computation. The protocol targets a 60-second block time. Initial transition depth N is 1,000 steps at genesis.
+The miner iterates nonce values until a valid hash is found. This is the search problem, identical in structure to Bitcoin mining, different in computation. The protocol targets a 60-second block time. Initial transition depth N is 1,000 steps at genesis.
 
 ### 3.4 Dual Proof-of-Work
 
-The Markovian Protocol supports two parallel mining paths. The primary path uses the Markov state transition work function described above. The secondary path uses RandomX, a CPU-optimized algorithm resistant to ASIC specialization. Both paths produce valid blocks. Both earn Kovs at protocol-defined rates. Bitcoin miners may merge mine MKV via Auxiliary Proof of Work — no additional hardware, no additional electricity.
+The Markovian Protocol supports two parallel mining paths. The primary path uses the Markov state transition work function described above. The secondary path uses RandomX, a CPU-optimized algorithm resistant to ASIC specialization. Both paths produce valid blocks. Both earn Kovs at protocol-defined rates. Bitcoin miners may merge mine MKV via Auxiliary Proof of Work, no additional hardware, no additional electricity.
 
 The dual architecture distributes security across hardware types and mining communities, reducing concentration risk at the consensus layer.
 
@@ -126,13 +126,13 @@ The proof system uses BN128 elliptic curve Pedersen commitments combined with Sc
 
 The proof system is structured in four independent layers. Each layer is verifiable independently of the others.
 
-Layer 1 — Matrix provenance: GENESIS_M is committed via Pedersen commitment against a deterministic hash of 29,795 market observations across five instruments spanning 2000 to present. The training hash is published. Any party can reproduce it from the same dataset. The commitment cannot be opened to a different matrix without invalidating the proof.
+Layer 1, Matrix provenance: GENESIS_M is committed via Pedersen commitment against a deterministic hash of 29,795 market observations across five instruments spanning 2000 to present. The training hash is published. Any party can reproduce it from the same dataset. The commitment cannot be opened to a different matrix without invalidating the proof.
 
-Layer 2 — Computation correctness: each Markov transition step carries a Schnorr sigma proof on BN128. One proof per output component, three per step, N proofs per block. Verification does not require re-computation. A single invalid transition invalidates the block.
+Layer 2, Computation correctness: each Markov transition step carries a Schnorr sigma proof on BN128. One proof per output component, three per step, N proofs per block. Verification does not require re-computation. A single invalid transition invalidates the block.
 
-Layer 3 — Input provenance: signal synthesis commits to its inputs before execution. Gate state, price data, regime vector, and agent outputs are hashed and committed prior to synthesis. The input commitment is linked to the output Merkle root in a single provenance record. The two cannot be constructed independently.
+Layer 3, Input provenance: signal synthesis commits to its inputs before execution. Gate state, price data, regime vector, and agent outputs are hashed and committed prior to synthesis. The input commitment is linked to the output Merkle root in a single provenance record. The two cannot be constructed independently.
 
-Layer 4 — Miner credibility: regime predictions are committed on-chain prior to resolution via SHA256(address, ticker, predicted regime, target block, nonce). At resolution the chain compares the committed prediction against the actual observed regime. Governance weight is derived from on-chain prediction history, not declared by the participant.
+Layer 4, Miner credibility: regime predictions are committed on-chain prior to resolution via SHA256(address, ticker, predicted regime, target block, nonce). At resolution the chain compares the committed prediction against the actual observed regime. Governance weight is derived from on-chain prediction history, not declared by the participant.
 
 The entire system rests on a single security assumption: discrete logarithm hardness over BN128. The assumption holds that, given a point Q on the BN128 curve and a generator G, it is computationally infeasible to find k such that Q = kG. No polynomial-time algorithm is known. The assumption has resisted the cryptographic community since 1976. Breaking any layer of the Markovian proof system requires solving this problem. Curve parameters and generator points are fixed at genesis and committed to the protocol specification. They do not change without a governance vote that itself requires a new ZK proof of correct parameterization.
 
@@ -156,7 +156,7 @@ This is the precise sense in which the work is proof-of-intelligence: not that c
 
 Validator-scored intelligence networks define useful output, then route that definition through consensus. The validator vote becomes the proof. Consensus of opinion does not constitute a cryptographic guarantee. It is subject to the same failure modes as any social mechanism: coordination, capture, and drift under adversarial pressure.
 
-The Markovian Protocol separates the two claims. The intelligence is encoded in M — an empirical model derived from market data and ratified by governance. The proof verifies that M was applied correctly to the inputs in evidence. The miner's intent is not evaluated. The computation either satisfies the proof or it does not.
+The Markovian Protocol separates the two claims. The intelligence is encoded in M, an empirical model derived from market data and ratified by governance. The proof verifies that M was applied correctly to the inputs in evidence. The miner's intent is not evaluated. The computation either satisfies the proof or it does not.
 
 No deployed proof-of-intelligence network submits this claim to cryptographic verification. The Markovian Protocol does.
 
@@ -269,7 +269,7 @@ Any remainder from integer division goes to the highest-confidence correct reade
 
 If no deep readers submitted a correct reveal for a block, the pool rolls forward. The next block's pool is 5,000,000 plus the accumulated rollover. Unclaimed pools compound across consecutive blocks where all readers were wrong or absent. A single correct call on a block with a large accumulated rollover pays out the full accumulated amount.
 
-The rollover mechanism makes deep reading more attractive during periods of genuine regime ambiguity — exactly the periods where an accurate model has the most edge.
+The rollover mechanism makes deep reading more attractive during periods of genuine regime ambiguity, exactly the periods where an accurate model has the most edge.
 
 **The Separation of Computation and Intelligence**
 
@@ -290,7 +290,7 @@ Name: Markoin
 Ticker: MKV
 Base unit: Kov (1 MKV = 100,000,000 Kovs)
 
-The supply is dynamic. There is no cap. There is no halving schedule. Emission is tied to verified network output — governance cycle accuracy, archive depth, validator participation, and commodity volatility. High volatility and active governance cycles produce higher emission. Stable, low-governance periods produce lower emission. The supply reflects the demonstrated output of the network.
+The supply is dynamic. There is no cap. There is no halving schedule. Emission is tied to verified network output, governance cycle accuracy, archive depth, validator participation, and commodity volatility. High volatility and active governance cycles produce higher emission. Stable, low-governance periods produce lower emission. The supply reflects the demonstrated output of the network.
 
 Each Kov in circulation represents a unit of verified, ZK-proven, Merkle-rooted computation that the network produced and the governance layer ratified. Emission is evidence of work performed, not a schedule imposed in advance.
 
@@ -304,16 +304,16 @@ The Markovian Protocol models economic regime transitions driven by real commodi
 
 The Markoin derives value from signal accuracy on real-world commodity flows, not supply constraint. As the governance model improves, the signal becomes more accurate. As the signal becomes more accurate, the archive becomes more useful. Utility drives demand. Demand prices the coin.
 
-### 4.2 Token Economics — Fisher's Equation of Exchange
+### 4.2 Token Economics, Fisher's Equation of Exchange
 
 The Kov economy is governed by Irving Fisher's Equation of Exchange:
 
 **MV = PT**
 
-- **M** — Kovs in circulation. Dynamic supply tied to verified network output. Emission rate is a governance parameter.
-- **V** — Velocity. The rate at which Kovs change hands to access archive data.
-- **P** — Price. Cost of archive access denominated in Kovs.
-- **T** — Transactions. Archive queries, data pulls, governance votes.
+- **M**, Kovs in circulation. Dynamic supply tied to verified network output. Emission rate is a governance parameter.
+- **V**, Velocity. The rate at which Kovs change hands to access archive data.
+- **P**, Price. Cost of archive access denominated in Kovs.
+- **T**, Transactions. Archive queries, data pulls, governance votes.
 
 As the archive deepens, T grows. Archive depth is the primary demand driver. Fisher's equation requires V and P to absorb the difference.
 
@@ -325,9 +325,9 @@ The emission function has defined bounds. A governance parameter caps maximum em
 
 Settlement currency: Bitcoin.
 
-Data buyers pay in BTC. Bitcoin is the universal settlement layer — the most trusted, most liquid, most decentralized asset in existence. The protocol requires no fiat bridge. It uses the one that already exists.
+Data buyers pay in BTC. Bitcoin is the universal settlement layer, the most trusted, most liquid, most decentralized asset in existence. The protocol requires no fiat bridge. It uses the one that already exists.
 
-When a data sale occurs, BTC enters the protocol. Network participants who contributed verified work — miners, validators, contributors — receive a proportional share of archive access fees based on Kovs staked. The distribution mechanism is fee-sharing, not issuance. Kovs are the access and governance instrument. BTC is the settlement instrument.
+When a data sale occurs, BTC enters the protocol. Network participants who contributed verified work, miners, validators, contributors, receive a proportional share of archive access fees based on Kovs staked. The distribution mechanism is fee-sharing, not issuance. Kovs are the access and governance instrument. BTC is the settlement instrument.
 
 The closed loop:
 
@@ -394,13 +394,13 @@ Validator voting weight is proportional to historical accuracy. Nodes whose prop
 
 The protocol uses three independent chains, each serving a distinct function.
 
-**Bitcoin — the anchor.**
+**Bitcoin, the anchor.**
 
 Every block the Markovian Protocol produces is committed to Bitcoin via OP_RETURN. A 28-byte Merkle root, prefixed with the MKV magic bytes, is embedded permanently in the Bitcoin chain. Every regime classification the protocol has ever produced can be independently verified against the Bitcoin chain, in sequence, by any party, permanently. The archive cannot be rewritten. The provenance cannot be forged.
 
 Direct BTC deposits are accepted. Send BTC to the protocol address with an OP_RETURN containing `MKV:YOUR_ADDRESS`. The deposit watcher detects the transaction. After three confirmations, Kovs are issued at the protocol rate.
 
-**Ethereum — the oracle.**
+**Ethereum, the oracle.**
 
 The Markovian Protocol's regime classifications, ZK proofs, and Merkle roots are posted on-chain via the MarkovianOracle smart contract. Any Ethereum application can query live regime state for any covered instrument and build regime-gated logic against it.
 
@@ -408,7 +408,7 @@ The oracle contract accepts `updateBatch()` calls from the protocol's reporter a
 
 `lockAndMint()` is the Ethereum-native participation path. Lock ETH in the oracle contract for a defined period. The contract issues Kovs proportional to the amount locked and the lock duration. The lock expires, ETH returns. The Kovs remain.
 
-**Monero — the private settlement rail.**
+**Monero, the private settlement rail.**
 
 Bitcoin transactions are permanently visible. Institutional buyers acquiring regime signal on a covered instrument are revealing a position. That purchase is alpha-sensitive. It will not be made on a public ledger.
 
@@ -442,15 +442,15 @@ Issuance rates reflect the properties of each instrument. Rates are governance p
 
 ## 8. Roadmap
 
-Phase 1 — Specification: white paper, math specification, protocol v1.0, community formation.
+Phase 1, Specification: white paper, math specification, protocol v1.0, community formation.
 
-Phase 2 — Testnet: PoW function, ZK proof system, P2P networking, block explorer.
+Phase 2, Testnet: PoW function, ZK proof system, P2P networking, block explorer.
 
-Phase 3 — Governance: validator registration, first matrix governance cycle, BFT implementation.
+Phase 3, Governance: validator registration, first matrix governance cycle, BFT implementation.
 
-Phase 4 — Mainnet: genesis block, wallet release, MKV issuance begins.
+Phase 4, Mainnet: genesis block, wallet release, MKV issuance begins.
 
-Phase 5 — Data Marketplace: archive API launch, BTC settlement layer live, institutional access tiers, fee distribution to network participants begins.
+Phase 5, Data Marketplace: archive API launch, BTC settlement layer live, institutional access tiers, fee distribution to network participants begins.
 
 ---
 
@@ -458,7 +458,7 @@ Phase 5 — Data Marketplace: archive API launch, BTC settlement layer live, ins
 
 Bitcoin answered the double-spend problem with energy expenditure. The work is real. The output is a secure ledger.
 
-The Markovian Protocol answers the same security requirements with structured computation — the mathematics of state transition, verified by zero-knowledge proofs, governed by Byzantine fault tolerant consensus, and compounding in accuracy over time as the archive deepens.
+The Markovian Protocol answers the same security requirements with structured computation, the mathematics of state transition, verified by zero-knowledge proofs, governed by Byzantine fault tolerant consensus, and compounding in accuracy over time as the archive deepens.
 
 The work is not discarded. It is verified, archived, and accumulated. The protocol grows more accurate with every block it produces. The supply reflects the cumulative output of the network.
 
