@@ -15,7 +15,7 @@ import psycopg2
 import psycopg2.extras
 
 NODE_URL         = 'https://api.quantsynth.net'
-DB_URL           = 'postgresql://signal:signal2026@127.0.0.1:5432/signal'
+DB_URL           = 'postgresql://signal:<password>@127.0.0.1:5432/signal'
 TIINGO_KEY       = 'f3fe5c650324da38f08f160f21d099e5c2a11b83'
 PROTOCOL_FEE_PCT = 0.02
 REGIMES          = ['ACCUMULATION', 'MARKUP', 'DISTRIBUTION']

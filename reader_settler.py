@@ -17,7 +17,7 @@ import psycopg2
 import psycopg2.extras
 
 NODE_URL        = 'https://api.quantsynth.net'
-DB_URL          = 'postgresql://signal:signal2026@127.0.0.1:5432/signal'
+DB_URL          = 'postgresql://signal:<password>@127.0.0.1:5432/signal'
 BASE_POOL_KOVS  = 5_000_000
 REVEAL_WINDOW   = 2   # blocks after target before settling
 REGIMES         = ['ACCUMULATION', 'MARKUP', 'DISTRIBUTION']
