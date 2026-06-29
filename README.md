@@ -79,4 +79,4 @@ holds the protocol primitive, the door integrations, and the specifications.
 
 ## License
 
-MIT. See LICENSE.
+Apache-2.0. See LICENSE and NOTICE.
