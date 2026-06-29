@@ -83,6 +83,8 @@ cross-door property.
 
 Input: a starting `merkle_root` and access to the envelopes carrying the nodes (an envelope store,
 a resolver service, or inline bundle).
+Implementations SHOULD memoize verified nodes by root within a walk (and MAY cache across
+walks), so a shared ancestor in a diamond DAG is verified once, not once per path.
 
 ```
 trace(root, store, seen = {}):
@@ -133,7 +135,32 @@ existed before block N. Walking the DAG yields a verifiable temporal partial ord
 lineage, anchored to Bitcoin. Adopt OpenTimestamps' incomplete-then-upgrade model so `block_height`
 hardens on confirmation.
 
-## 9. Out of scope for v1 (roadmap)
+## 9. Limitations and open problems (named honestly)
+
+- DATA AVAILABILITY (the main open problem). The walk needs each node's traceable payload to read
+  its parents and recompute its hash. The chain stores only the root and `data_hash`, not the
+  payload. A node is walkable only if its payload is available: carried in the door envelope,
+  bundled with the artifact, or served by a resolver keyed by root. A node whose payload is missing
+  can still be verified as a frontier leaf (anchor confirmed, and the child's claimed parent
+  `data_hash` matches on-chain), but cannot be expanded; TRACE marks it `unresolved` and continues.
+  v1 expects payloads to travel with the artifacts (inline bundle) or be fetchable from a resolver.
+
+- DERIVATION IS A CLAIM, NOT AN AUTHORIZATION. Any party can reference any public root as a parent.
+  The in-band edge proves the reference is bound and the parent existed before the child; it does
+  NOT prove the child's author was entitled to derive from the parent, or that derivation actually
+  happened. To assert authorized derivation, pair the edge with the authorship axis (the producer
+  signature) or require the parent's signer to countersign. Consistent with provenance, not truth:
+  the edge records a claimed lineage anchored in time, not a sanctioned one.
+
+- COMPLETENESS IS NOT GUARANTEED. TRACE returns the lineage reachable from the payloads it holds.
+  A producer can present a subgraph. TRACE reports the frontier plus any `truncated` / `unresolved`
+  nodes; it never claims the returned graph is the whole history.
+
+- TRAVERSAL PRIVACY. v1 verification requires the payloads, so a verifier sees the lineage it walks.
+  The ZK commitment hides content at rest, not from a verifier who is handed the payload. Proving a
+  valid lineage WITHOUT revealing the intermediate stamps is the v2 recursive-fold goal (section 10).
+
+## 10. Out of scope for v1 (roadmap)
 
 - Recursive proof folding (one O(1) proof for the whole lineage) — v2, demand-gated. Runs on
   Pedersen/BN254 (our curve) via Nova/HyperNova + CycleFold but requires arithmetizing stamp logic
