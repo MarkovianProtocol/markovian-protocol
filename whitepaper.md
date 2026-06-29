@@ -2,39 +2,51 @@
 ## A Proof-of-Intelligence Protocol Powered by Markov State Transition
 
 Version 1.0 - June 2026
-Author: Colin Winter
+Markovian Protocol Research
 
 ---
 
 ## Abstract
 
-Bitcoin solved the double-spend problem. The security model is sound. The computation produces no output beyond the security it purchases. SHA-256 hashing generates heat and irreversible work, both of which are discarded the moment a block is verified. The network accumulates ledger entries. It accumulates nothing else.
+The oracle problem is a symptom of a deeper infrastructure gap.
 
-The Markovian Protocol proposes a different work function.
+Every protocol that processes external data requires a trusted intermediary to bring it on-chain. Whether decentralized or institutional, that intermediary is a trust surface that can be manipulated, bribed, or taken offline. Oracle exploitation accounted for over $400 million in documented losses in 2022 alone, across protocols that had taken significant steps toward decentralization.
 
-Miners compute N transitions of a published 3x3 stochastic transition matrix M from a starting vector s derived deterministically from the previous block hash. The output is a probability distribution across three economic regime states: Accumulation, Markup, Distribution. Each valid block adds a verified data point to a permanent archive of market regime history. The work function is deterministic, independently verifiable, and difficulty-adjustable via the transition depth parameter N. The validity condition is not arbitrary. M is derived from fifteen years of price data via Hidden Markov estimation, ratified by Byzantine fault tolerant validator governance, and committed on-chain with cryptographic proof. The protocol defines what constitutes a valid transition. That definition is itself a claim about market structure.
+The underlying cause is that blockchains have no native mechanism for verifying that a computation was performed correctly on specific data at a specific point in time. Without that mechanism, external data feeds are structurally required. HTTP transmits data. SSL encrypts it. SHA-256 hashes it. OAuth authenticates identity. Digital signatures authenticate messages. None of these prove that a specific computational process executed on specific data at a specific point in time and produced a specific result. That guarantee does not exist. Every system that requires it falls back to oracles, audit logs, institutional trust, and the assumption that nobody altered the inputs.
 
-The archive has commercial value. Quantitative funds, risk desks, and algorithmic trading systems require labeled regime history. The Markovian Protocol produces that data as a byproduct of consensus, with zero-knowledge proof of correctness and Merkle-rooted provenance on every block.
+The Markovian Protocol provides that guarantee for computations derived entirely from chain state. The starting state vector for every block is determined by the previous block hash. No external feed enters the computation. No oracle is present. The settlement is the computation itself, committed via BN128 Schnorr zero-knowledge proof and anchored permanently to the Bitcoin chain. Any party can verify the result independently, at any time, without trusting any institution.
 
-The coin is priced by the demonstrated intelligence of the network. Total dollar value of data produced divided by circulating supply and velocity produces a computable fundamental value. The valuation is anchored to real economic utility, not supply constraint.
+The Markovian Protocol functions as a computational process authentication layer.
 
-The supply is dynamic. Emission is proportional to verified network output: governance cycle accuracy, archive depth, validator participation, and commodity volatility. The emission rate is a scoreboard, not a schedule.
+Every block, a hidden Markov matrix M is published by the protocol. Miners find the optimal state path through M using the Viterbi algorithm, given a public observation sequence derived from the previous block hash. A zero-knowledge proof binds the input, the computation, and the output simultaneously. The proof commits to M, the observation sequence, and the resulting state path. No miner can produce a valid proof without executing the algorithm correctly. No miner can reuse a proof from a prior block. The computation is cryptographically bound to the block.
 
-The transition matrix M is a governance parameter. A Byzantine fault tolerant supermajority of validators, weighted by historical accuracy, proposes and ratifies matrix updates on a defined cycle. The protocol's model of market structure improves with the archive. The data compounds in accuracy. The coin follows.
+The result is permanently anchored to the Bitcoin chain via OP_RETURN. Any party can verify the proof independently, at any time, without trusting any institution. The public verifier is live.
+
+This constitutes the base protocol. The security model is sound; the proof construction is tight.
+
+On top of it: an inference marketplace. External parties submit HMM inference problems as the block computation. Miners solve real problems as proof of work. The ZK proof verifies correct execution and is permanently on-chain. Genomics pipelines, financial risk models, clinical trial statistics, regulatory compliance models, scientific reproducibility. One protocol provides a single standard for every domain requiring proof that a computation was performed correctly on specific data.
+
+The coin, MKV, is the access token to the standard. Demand for verifiable computation drives demand for MKV. The chain accumulates security as the standard becomes infrastructure.
+
+The work function is computationally bounded. The trust is mathematically guaranteed. The archive is the deliverable.
 
 ---
 
 ## 1. The Problem
 
-The Markovian Protocol is a new blockchain.
+There are four authentication problems the internet has needed to solve.
 
-Nakamoto consensus is a well-understood mechanism. By making block production expensive and verification cheap, Bitcoin created a trustless ledger that has operated without interruption for over fifteen years. The security model is battle-tested.
+The internet has solved three of the four fundamental authentication problems: identity (SSL, OAuth, PKI), ownership (Bitcoin, digital signatures), and message integrity (hash chains, digital signatures). The fourth problem, verifying that a specific computation was performed correctly on specific data at a specific point in time, remains structurally unsolved.
 
-The work is not reused. SHA-256 hashing produces nothing of value beyond the security it purchases. Miners burn electricity, generate heat, and discard the outputs. The system functions because the waste is expensive enough to make attacks uneconomical. The incentive structure is sound. The output is not.
+The gap is not academic. A genomics company publishes a model result. No external party can verify the model was not adjusted after seeing the data. A bank submits a risk model to regulators. No auditor can verify it ran on pre-trade data rather than post-trade data. A pharmaceutical company publishes a clinical trial outcome. No review board can verify the statistical model predates the unblinded results. The current answer is audit logs, institutional reputation, and trust. These fail silently.
 
-Proof of Useful Work has been proposed as an alternative, mining that produces economically valuable computation as a byproduct of consensus. Prior attempts have failed on one of two grounds: the useful computation is not independently verifiable without trust, or the computation is insufficiently resistant to strategic gaming.
+The Markovian Protocol addresses this structural gap.
 
-The Markovian Protocol addresses both constraints. Markov state transition is deterministic, identical inputs produce identical outputs on any hardware. Zero-knowledge proofs make verification trustless and instantaneous. Difficulty is adjustable via transition depth N. The output is a probability distribution across economic regime states derived from an empirically fitted governance model.
+Nakamoto consensus established that making block production expensive and verification cheap creates a trustless ledger. The Markovian Protocol extends this insight: making computation verifiable and the proof permanent creates a trustless record of process. The security model derives from Nakamoto consensus. The output class is novel.
+
+SHA-256 hashing produces nothing beyond the security it purchases. Miners burn electricity and discard the result. The Markovian Protocol uses the Viterbi algorithm as its work function. The result is not discarded. It is a ZK-verified computational proof, anchored permanently, verifiable by anyone.
+
+Prior attempts at useful proof-of-work failed on determinism or trust. The Markovian Protocol addresses both. Markov state transition is deterministic, identical inputs produce identical outputs on any hardware. Zero-knowledge proofs make verification trustless and instantaneous. The computation is bounded. The proof is exact. The record is permanent.
 
 ---
 
@@ -174,7 +186,7 @@ Reproducing the archive requires running the protocol from genesis. There is no 
 
 ## 3.8 The Reader Layer
 
-Miners produce the archive. They do not interpret it.
+The mining layer produces the verified archive. Interpretation of archive state is a separate protocol layer.
 
 **Light Reading**
 
@@ -343,7 +355,7 @@ MKV is priced by demand. Settled in Bitcoin. Earned by verified work.
 
 ### 4.4 Treasury Reserve Floor
 
-Not all Kovs are equal.
+Kov classes differ in their backing and treasury claims.
 
 Three classes exist:
 
@@ -422,6 +434,61 @@ Issuance rates reflect the properties of each instrument. Rates are governance p
 
 ---
 
+
+
+---
+
+## 6.8 Verifiable AI Inference: The Input Integrity Gap
+
+The field called verifiable AI, zkML, provable inference, trustless model execution, has attracted significant capital and research effort. The goal is correct: AI systems that produce outputs no one can tamper with. The implementations share a structural flaw.
+
+**What zkML systems prove.**
+
+EZKL wraps arbitrary neural networks in Halo2 circuits. Modulus Labs does the same with StarkWare. Risc Zero runs PyTorch inside a RISC-V zkVM and produces a ZK proof of execution. Each of these systems proves one thing: the computation ran correctly on the inputs it received.
+
+They do not prove the inputs were not corrupted before execution began.
+
+If a fraud detection model receives manipulated transaction data before inference, the ZK proof confirms the model ran correctly on manipulated data. The proof is valid. The result is fraudulent. The attack surface is not the computation. It is the data pipeline feeding the computation. Every zkML system in production today has this vulnerability. It is not a bug in their implementation. It is a structural gap in the approach.
+
+**What Markovian proves.**
+
+The starting state vector for every Markovian block is derived deterministically from the previous block hash. The observation sequence is a function of chain state. No external data feed enters the inference computation at any point.
+
+This means the inputs cannot be corrupted before execution. There is no data pipeline. There is no external source. The chain state is the input, and the chain state is incorruptible by construction.
+
+Every Markovian block is a ZK-proven AI inference where input integrity is structural rather than assumed. The BN128 Schnorr proof commits the Viterbi execution. The block hash pins the starting state. Any verifier reproducing the computation from the same block hash gets the same result. The proof is deterministic, immediate, and requires no trusted intermediary.
+
+**The competitive distinction.**
+
+zkVMs prove execution integrity. Markovian proves execution integrity plus input integrity, for the specific case where the computation is derived from chain state. These are different guarantees.
+
+A zkML system that proves a credit model ran correctly cannot prevent a lender from feeding it pre-selected applicants. A Markovian inference cannot be fed pre-selected inputs because it has no input channel to manipulate. The economic regime state is what the chain says it is.
+
+This is not a general-purpose AI proving system. It does not replace EZKL for arbitrary neural networks. For computations that can be derived from chain state, it provides a stronger guarantee than any existing zkML approach because it removes the trust assumption at the data layer rather than hardening it.
+
+**AI inference as proof of work.**
+
+In every prior blockchain, proof of work produces entropy. SHA-256 hashes have no value outside the consensus mechanism. Markovian's proof of work is an HMM inference. The output of every block is a verified economic regime classification, cryptographically bound to the block hash and permanently anchored to the Bitcoin chain.
+
+The inference record and the consensus mechanism are the same object.
+
+This has not been done before. Mining and useful AI inference have been proposed together but always failed at the binding problem: when external value exceeds block reward, miners pursue the work independent of chain integrity. The ZK proof solves this. A valid Markovian proof cannot be produced for a different block context. The inference is cryptographically bound to this block hash, this chain height, this moment. The work and the ledger are inseparable.
+
+**The regulatory context.**
+
+The EU AI Act requires traceability of high-risk AI decisions. Current AI systems provide logs. Logs can be altered. A ZK proof anchored to Bitcoin cannot be. For regulated industries, financial risk, clinical trials, insurance underwriting, credit scoring, the difference between a log and a proof is the difference between a compliance claim and a compliance guarantee.
+
+Markovian is the first system where that guarantee is produced as a byproduct of consensus. Every block mines the chain and produces an auditable AI inference record simultaneously. No additional infrastructure is required for the audit trail. It is the protocol.
+
+**What this opens.**
+
+Any party that requires proof of correct AI inference on incorruptible inputs has no current solution. Markovian provides one for the computation class it covers. The inference marketplace in Phase 5 extends this to external problem submissions, where submitters lock MKV and receive ZK-proven inference results bound to the block hash at submission time.
+
+The input integrity problem is not solved in the general case. For chain-state-derived computation, it is solved structurally. That structural solution is the foundation the verifiable AI field has been missing.
+
+
+---
+
 ## 7. Security Model
 
 **Precomputation Attack:** The starting vector s is derived from the previous block hash, which is unknown until the block is mined. Precomputed transition tables map to a starting state that does not exist until that moment. An attacker precomputing against all possible future block hashes faces a search space equivalent to brute-forcing SHA-256. The nonce challenge is fresh every block.
@@ -463,3 +530,163 @@ The Markovian Protocol answers the same security requirements with structured co
 The work is not discarded. It is verified, archived, and accumulated. The protocol grows more accurate with every block it produces. The supply reflects the cumulative output of the network.
 
 The smallest unit is a Kov. Every Kov is cryptographic evidence that the network produced a verified regime classification. The protocol determined what valid means.
+
+---
+
+## 6.5 Verifiable Inference Markets
+
+Every block in the Markovian Protocol runs a Viterbi computation. The hidden Markov matrix M is applied to an observation sequence derived from the block hash. The result is a verified state path. The ZK proof confirms correct execution.
+
+In the base protocol, M is generated by the protocol itself. The computation is real. The answer is provably correct. But the problem being solved is random. No external party submitted it. No external party benefits from the result.
+
+This changes in Phase 5.
+
+**The problem with prior useful proof-of-work.**
+
+Primecoin. Gridcoin. Curecoin. Each attempted to make mining produce something valuable. Each failed at the same point.
+
+When the external value of the work exceeds the block reward, miners pursue the work regardless of chain integrity. Security decouples from the ledger. Transaction validity becomes secondary. The alignment breaks because the work and the chain are loosely coupled. A miner can solve the useful problem without mining a valid block.
+
+SHA-256 cannot fix this. Hashing has no structure. There is nothing to bind.
+
+**The ZK binding solution.**
+
+Markovian can fix this. The ZK proof does not only verify that Viterbi was executed. It commits to the block hash, the M matrix, the observation sequence, and the output state path simultaneously. A valid proof for block N cannot be produced for block N-1 or any other context. The computation is cryptographically bound to the block.
+
+This makes useful proof-of-work structurally sound for the first time.
+
+**The three-layer structure.**
+
+**Protocol Layer.** The Markovian chain. Consensus, ZK proofs, MKV ledger. Does not know what problem it is solving. Does not change. This is the trust machine.
+
+**Inference Marketplace.** An application protocol on top of the chain. External parties submit HMM inference problems, lock MKV in escrow, and receive verified results when the block is mined. The marketplace handles problem routing, escrow logic, and settlement. Multiple competing marketplace implementations can run simultaneously. The protocol layer is indifferent to them.
+
+**Vertical Applications.** Genomics pipelines, financial analytics platforms, anomaly detection systems. These applications submit problems to the marketplace and consume the verified results. They do not interact with the chain directly. They do not need to understand Viterbi or ZK proofs.
+
+**Who buys verified inference.**
+
+Hidden Markov models are not an academic exercise. They are the core primitive behind gene prediction (GENSCAN, Augustus, HMMer), market regime detection, network intrusion detection, and speech recognition. Each of these domains has established commercial buyers who currently pay for computation without cryptographic proof of correctness.
+
+A genomics company submits a gene sequence analysis problem. A hedge fund submits a regime classification problem on proprietary price data. An insurance actuary submits a risk state inference problem. Each locks MKV, receives a ZK-verified result, and can prove to any third party that the computation was executed correctly. The proof is permanent and public. The input data can remain private.
+
+**MKV demand loop.**
+
+Every problem submitted to the marketplace requires MKV. Miners earn MKV block rewards plus MKV problem fees. The more commercially valuable problems route through the chain, the greater the demand for MKV, the more valuable mining becomes, the more security the chain accumulates.
+
+This is a positive feedback loop that does not exist in Bitcoin. Bitcoin's security is proportional to the price of electricity. Markovian's security is proportional to the utility of verified inference. As the inference marketplace grows, the base protocol becomes more secure without any changes to the consensus layer.
+
+**Extension to probabilistic graphical models.**
+
+The Viterbi algorithm is one inference method on one model class. The ZK proof system is not limited to it.
+
+Bayesian networks, hidden semi-Markov models, factorial HMMs, conditional random fields, and dynamic Bayesian networks all operate on the same principle: infer hidden state from observable evidence. Each can be represented as a structured computation with a verifiable output.
+
+A future protocol upgrade extending the proof system to the broader class of probabilistic graphical models expands the inference marketplace to cover medical diagnosis, supply chain risk modeling, climate state inference, and any domain where hidden state must be inferred from observable data.
+
+The chain becomes a general-purpose verifiable inference engine. Not a ledger with a side computation. A trust machine for probabilistic reasoning.
+
+**What does not change.**
+
+The base protocol does not change. The consensus mechanism does not change. MKV remains the only currency. No new tokens are issued per vertical. The marketplace is additive. The trust machine runs underneath it regardless of whether any problems are submitted.
+
+The base layer works like Bitcoin. The inference marketplace is the business built on top of the trust machine.
+
+
+---
+
+## 6.6 The Verifiable Computation Standard
+
+The Markovian Protocol is a blockchain. It is also something the internet does not have.
+
+HTTP is a standard for transmitting data. SSL/TLS is a standard for encrypting it. SHA-256 is a standard for hashing it. JWT is a standard for authenticating identity.
+
+There is no standard for verifying that a computation was performed correctly on a specific dataset at a specific point in time.
+
+This is the gap the Markovian Protocol fills.
+
+**The problem with institutional trust.**
+
+A genomics company publishes a gene prediction result. No external party can verify the model was not adjusted after seeing the data. A bank submits a risk model to regulators. No auditor can verify the model ran on Monday's data rather than Tuesday's after the position moved. A pharmaceutical company publishes a clinical trial outcome. No review board can verify the statistical model was not recalibrated after unblinding.
+
+The current answer is audit logs, institutional reputation, and trust. These fail silently. Logs can be altered. Institutions have incentives. Trust is not proof.
+
+**The standard procedure.**
+
+The Markovian Protocol defines a five-step standard for committing and verifying any computation.
+
+One. The submitting party locks the dataset and model parameters in a cryptographic commitment before execution begins. The input is sealed before the output is known.
+
+Two. Markovian miners execute the computation as proof of work. The hidden Markov matrix M encodes the model. The observation sequence encodes the dataset. The Viterbi algorithm produces the result.
+
+Three. A zero-knowledge proof binds the input commitment to the output state path. The proof verifies that this model ran on this data and produced this result. Not a different model. Not different data.
+
+Four. The result and proof are posted on-chain. The Merkle root is anchored to the Bitcoin chain via OP_RETURN. The record is permanent. It cannot be altered, removed, or backdated.
+
+Five. Any third party verifies the proof independently, at any time, without trusting any institution. The public verifier is live at api.quantsynth.net/verify.
+
+**What this replaces.**
+
+This is not a crypto product. It is infrastructure. The same category as SSL certificates: something every institution eventually requires whether or not they understand the cryptography.
+
+A regulator requiring cryptographic proof of model execution. A clinical trial board requiring proof that the statistical model predates the outcome data. An exchange requiring proof that a risk engine ran on pre-trade data. A scientific journal requiring proof of computational reproducibility.
+
+None of these require the submitting party to understand zero-knowledge proofs, hidden Markov models, or blockchain consensus. They require a verifiable result and a proof. The protocol provides both.
+
+**The standardization path.**
+
+Protocols become standards when they solve a problem that institutions cannot solve any other way. SSL became the standard for web encryption because the alternative was plain text transmission of passwords. HTTPS became mandatory. Nobody debated it.
+
+Verifiable computation will follow the same path. The question is which protocol defines the standard.
+
+The ZKProof standardization body, NIST post-quantum cryptography working groups, and ISO data provenance committees are the bodies that transform a protocol into the protocol. The Markovian construction, BN128 Pedersen commitments with Schnorr sigma proofs over Viterbi execution, is a concrete candidate for that standardization process.
+
+**A single chain provides a single standard across all verticals without issuing new tokens per use case.**
+
+Every vertical that requires verifiable computation runs through the same protocol. Genomics, financial risk, clinical trials, regulatory compliance, scientific reproducibility. MKV is the access token to the standard. Demand for the standard drives demand for the token. The chain accumulates security as the standard becomes infrastructure.
+
+The work function is computationally bounded. The trust is mathematically guaranteed. The archive is the deliverable.
+
+
+---
+
+## 6.7 Scope and Limits of the Guarantee
+
+The Markovian Protocol makes one claim. The computation was executed correctly on these specific inputs. The model did not change after seeing the results. The output is mathematically bound to the input. That binding is permanent and verifiable by any party, at any time, without trusting any institution.
+
+That is the guarantee. Nothing more.
+
+**What the protocol does not prove.**
+
+The inputs were honest.
+
+Fabricated data can be committed to the chain as easily as real data. The zero-knowledge proof verifies correct execution of the Viterbi algorithm on whatever was submitted. A cherry-picked observation sequence, a backdated dataset, a filtered patient cohort, each produces a valid proof. The inputs were fraudulent. The proof is technically correct. The distinction matters.
+
+This is the oracle problem. It is not unique to the Markovian Protocol. It exists in every system that computes on externally supplied data. Chainlink is an entire company addressing just this for decentralized finance price feeds. No blockchain solves it from within the consensus layer alone.
+
+**What partially addresses it.**
+
+Three complementary layers can extend the guarantee toward data authenticity. None of them are the Markovian Protocol. All of them compose with it.
+
+Signed data sources. When data originates from a device or institution that cryptographically signs its outputs, a genomic sequencer with hardware attestation, a regulated exchange with a signed feed, a sensor operating inside a secure enclave, that signature is bundled into the Markovian commitment. The on-chain proof then binds: this data came from this signed source, and this computation ran on it. The chain verifies the signature alongside the computation. Fabrication requires compromising the signing key, not just the submitter's intent.
+
+Trusted Execution Environments. Intel SGX and AMD SEV produce hardware attestations proving that a specific computation ran in an isolated environment on data pulled directly from a source, without the operator being able to alter either. Bundled with a Markovian ZK proof, a TEE attestation proves data origin and computation correctness simultaneously. The DECO protocol from Cornell demonstrates this approach for private web data.
+
+Multi-party commitment. Requiring independent institutions to commit to the same dataset separately before any results are computed raises the cost of fabrication from individual misconduct to coordinated collusion. When three independent parties each produce a Markovian proof showing the same result from independently committed data, the on-chain record of all three is permanent. Collusion is not impossible. It becomes auditable.
+
+**What the protocol does catch.**
+
+Cherry-picking across runs. A submitter testing five models against the same dataset looking for a favorable outcome produces five on-chain records. The pattern is visible. What was invisible in private computation becomes an auditable history of model selection. The economics of fraud change even when data authenticity cannot be fully guaranteed.
+
+Post-hoc model adjustment. The commitment seals the model before execution. Any model altered after seeing preliminary results produces a different commitment. The chain records both. Adjustment is detectable.
+
+Backdated results. The Merkle root is anchored to the Bitcoin chain. The timestamp is the Bitcoin block time. Claims that a computation preceded its on-chain commitment are falsifiable against the permanent record.
+
+**The court reporter analogy.**
+
+A court reporter guarantees the transcript is exactly what was said. They cannot guarantee the witnesses told the truth. The transcript is provably accurate. The content may not be.
+
+The Markovian Protocol is the court reporter. It proves the model ran on the data submitted. It does not prove the data submitted was the right data.
+
+Stating this clearly is not a limitation to apologize for. It is the precise scope of a real guarantee. Systems that overstate their guarantees fail under scrutiny. Systems that state their guarantees exactly earn the trust of the people who matter.
+
+The complementary layers exist. They compose with this protocol. The full stack, signed sources plus TEE attestation plus multi-party commitment plus Markovian proof, addresses data authenticity at a level no prior system has achieved. The Markovian Protocol provides the foundation. The stack builds from there.
