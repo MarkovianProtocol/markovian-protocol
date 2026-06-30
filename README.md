@@ -48,20 +48,44 @@ Reference pages for each door, with live examples:
 
 ## Try it
 
-The doors are live. These calls run against the public endpoint, no account required.
+Stamp something and verify it in thirty seconds. No account, no wallet, no token.
 
 ```bash
-# Verify any record (browser or API)
-curl https://api.quantsynth.net/verify/<merkle_root>
+pip install markovian
+```
 
-# The MCP server (Streamable HTTP, trailing slash required)
+```python
+from markovian import MarkovianClient
+
+client = MarkovianClient()                 # free tier, no key
+receipt = client.stamp("my agent predicted X at 09:00")
+print(receipt["verify_url"])               # anyone can check this
+
+client.verify(receipt["merkle_root"])      # {'verified': True, ...}
+```
+
+The record is committed to the chain before the outcome is known. That is the point. A
+track record that cannot be edited in hindsight. The basic stamp burns no MKV.
+
+Now anyone confirms it, with no SDK and no account:
+
+```bash
+curl https://api.quantsynth.net/verify/<merkle_root>
+```
+
+Same record, other doors:
+
+```bash
+# MCP server (Streamable HTTP, trailing slash required)
 # https://api.quantsynth.net/mcp/   tools: markovian_stamp, markovian_verify
 
-# The A2A extension definition
+# A2A extension definition
 curl https://api.quantsynth.net/a2a/ext/provenance/v1
 ```
 
 A real record, verifiable in the browser: https://demo.markovianprotocol.com
+
+A runnable version of the loop above: `examples/stamp_and_verify.py`
 
 The MCP server is listed in the official MCP registry as `io.github.MarkovianProtocol/provenance`.
 
