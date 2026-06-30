@@ -28,6 +28,8 @@ On top of it: an inference marketplace. External parties submit HMM inference pr
 
 The coin, MKV, is the access token to the standard. Demand for verifiable computation drives demand for MKV. The chain accumulates security as the standard becomes infrastructure.
 
+Proving costs the network nothing beyond the work that already secures it. Verification is therefore free to every party, permanently. The proof is a public good, not a product.
+
 The work function is computationally bounded. The trust is mathematically guaranteed. The archive is the deliverable.
 
 ---
