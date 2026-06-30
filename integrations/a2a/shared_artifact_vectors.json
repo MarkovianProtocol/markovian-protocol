@@ -1,0 +1,142 @@
+{
+  "$about": "Shared artifact-level conformance vectors for the A2A output-provenance field table in a2aproject/A2A#2011. Each vector is a full A2A Artifact carrying up to three flat, separable siblings in Artifact.metadata (authorship / provenance_ref? / reliability), none inside the signed fact bytes. Consolidates the published per-producer vectors so the three implementations point at one set. provenance_ref vectors are re-runnable against the live Markovian verifier; markovian-producer authorship carries an inline pubkey so the signature checks offline.",
+  "field_table": {
+    "authorship": "Ed25519 over the canonical fact (json-sorted-compact). Verify against metadata.verify key set, or the inline authorship.pubkey when present.",
+    "provenance_ref": "OPTIONAL markovian-provenance/v1 commitment (merkle_root, anchor, verifier_url). States: ABSENT (omitted) or PRESENT. PRESENT proves existence-in-time only, never correctness.",
+    "reliability": "okf-reliability-v1 object. Validate against https://dynamicfeed.ai/schemas/okf-reliability-v1.json"
+  },
+  "checks": "Per vector: (1) reliability MUST validate against okf-reliability-v1; (2) authorship MUST be a well-formed Ed25519 block and the sig MUST verify over the canonical fact; (3) if provenance_ref is PRESENT it MUST re-check against its verifier; (4) no sibling appears inside the signed fact bytes. A vector is 'valid' only if every present axis passes.",
+  "vectors": [
+    {
+      "label": "dynamicfeed.ai: single-source live reading, anchor ABSENT (honest no-anchor state)",
+      "expect": "valid",
+      "producer": "dynamicfeed.ai",
+      "note": "From dynamicfeed/df-verify (producer dynamicfeed.ai). Anchor ABSENT honest state; authorship verifies against the producer key set at metadata.verify.",
+      "artifact": {
+        "artifactId": "eb8e8ef3-3db9-41bb-9e53-e8d2c746be42",
+        "name": "us_economy result",
+        "extensions": [
+          "https://dynamicfeed.ai/a2a/ext/provenance/v1"
+        ],
+        "metadata": {
+          "authorship": {
+            "alg": "Ed25519",
+            "key_id": "df-ed25519-4cb32e72f333",
+            "canonicalization": "json-sorted-compact",
+            "sig": "quVFirLVSmSZr2KtEjfCgkk1-EAfs_UWYLwH5R4WLNFcaqd86Hk8b5jp9CmW6CIcfKV4dvz-HdGXfWJ7p3ucBw=="
+          },
+          "verify": "https://dynamicfeed.ai/.well-known/keys",
+          "reliability": {
+            "type": "okf-reliability-v1",
+            "confidence": "MEDIUM",
+            "basis": "live-source",
+            "score": 0.8,
+            "sources": 1,
+            "verified": false,
+            "vantage": "producer-reported",
+            "freshness": {
+              "state": "fresh"
+            },
+            "signals": {
+              "signed": true,
+              "corroborated": false,
+              "fresh": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "label": "markovian: anchor PRESENT, live commitment, valid",
+      "expect": "valid",
+      "producer": "markovian",
+      "note": "provenance_ref is a real markovian-provenance/v1 commitment; re-checkable green at its verifier_url.",
+      "artifact": {
+        "artifactId": "mkv-shared-present-valid",
+        "name": "us_economy result",
+        "extensions": [
+          "https://api.quantsynth.net/a2a/ext/provenance/v1"
+        ],
+        "metadata": {
+          "authorship": {
+            "alg": "Ed25519",
+            "key_id": "mkv-ed25519-f1a4e3627f3f",
+            "canonicalization": "json-sorted-compact",
+            "pubkey": "wEmd1UWivLhADzK46-_o3IyIkDBaNQ1sHAMIgupcgg8",
+            "sig": "1lPSg3haFeAzvwZQM-F1daKJqqzc014j_GGVDM6eD_VdxaMDdrc7tdA_7jIezWfZUwNjDtXjJaNr1-DN0Fc9AA"
+          },
+          "provenance_ref": {
+            "schema": "markovian-provenance/v1",
+            "merkle_root": "092a7fc0b790421543d99ad24b78b4cc3d6de729498fd9828ac2f1347b6f6a24",
+            "anchor": "BN128 Pedersen + Merkle root, chain-recorded",
+            "block_height": 136230,
+            "verifier_url": "https://api.quantsynth.net/verify/092a7fc0b790421543d99ad24b78b4cc3d6de729498fd9828ac2f1347b6f6a24"
+          },
+          "reliability": {
+            "type": "okf-reliability-v1",
+            "confidence": "MEDIUM",
+            "basis": "live-source",
+            "score": 0.8,
+            "sources": 1,
+            "verified": false,
+            "vantage": "producer-reported",
+            "freshness": {
+              "state": "fresh"
+            },
+            "signals": {
+              "signed": true,
+              "corroborated": false,
+              "fresh": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "label": "markovian: anchor PRESENT but not re-checkable, invalid",
+      "expect": "invalid",
+      "producer": "markovian",
+      "note": "authorship and reliability are well-formed; the vector is invalid solely because provenance_ref.merkle_root does not resolve at its verifier (existence-in-time cannot be confirmed).",
+      "artifact": {
+        "artifactId": "mkv-shared-present-invalid",
+        "name": "us_economy result",
+        "extensions": [
+          "https://api.quantsynth.net/a2a/ext/provenance/v1"
+        ],
+        "metadata": {
+          "authorship": {
+            "alg": "Ed25519",
+            "key_id": "mkv-ed25519-f1a4e3627f3f",
+            "canonicalization": "json-sorted-compact",
+            "pubkey": "wEmd1UWivLhADzK46-_o3IyIkDBaNQ1sHAMIgupcgg8",
+            "sig": "IUgLPea9AvoAM3ufUnqgwWe-CiywFj2Sr_NV-9BnG9caQVNMrlfV9c2rJAyfYAn92ZA-SwVnTa-PioMJu0_lCw"
+          },
+          "provenance_ref": {
+            "schema": "markovian-provenance/v1",
+            "merkle_root": "4ea1fdc971c54184c3c1414b32d71515938d80fc0f0de3ad4a4b68c0b9397e6c",
+            "anchor": "BN128 Pedersen + Merkle root, chain-recorded",
+            "block_height": 0,
+            "verifier_url": "https://api.quantsynth.net/verify/4ea1fdc971c54184c3c1414b32d71515938d80fc0f0de3ad4a4b68c0b9397e6c"
+          },
+          "reliability": {
+            "type": "okf-reliability-v1",
+            "confidence": "MEDIUM",
+            "basis": "live-source",
+            "score": 0.8,
+            "sources": 1,
+            "verified": false,
+            "vantage": "producer-reported",
+            "freshness": {
+              "state": "fresh"
+            },
+            "signals": {
+              "signed": true,
+              "corroborated": false,
+              "fresh": true
+            }
+          }
+        }
+      }
+    }
+  ]
+}
