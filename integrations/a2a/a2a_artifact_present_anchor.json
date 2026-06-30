@@ -1,0 +1,40 @@
+{
+  "artifactId": "mkv-present-0001",
+  "name": "us_economy result",
+  "extensions": [
+    "https://dynamicfeed.ai/a2a/ext/provenance/v1"
+  ],
+  "metadata": {
+    "authorship": {
+      "alg": "Ed25519",
+      "key_id": "mkv-ed25519-908c38c9dec8",
+      "canonicalization": "json-sorted-compact",
+      "sig": "VJNtOXwc0ktJaNKhihdYswpWRcmBpm6m1dHS4LwYfMAjKKnLuaMOF7RvpFmQKiYHlXOeHrbzwirLQP3Jc6AhBQ"
+    },
+    "verify": "https://api.quantsynth.net/verify/76e3f374d96ea50b3e894d8aa446ad96f34b42f299180a31fbb8652cd309fc8e",
+    "provenance_ref": {
+      "type": "markovian-provenance/v1",
+      "merkle_root": "76e3f374d96ea50b3e894d8aa446ad96f34b42f299180a31fbb8652cd309fc8e",
+      "anchor": "BN128 Pedersen commitment + Merkle root, chain-recorded",
+      "block_height": 135829,
+      "verifier_url": "https://api.quantsynth.net/verify/76e3f374d96ea50b3e894d8aa446ad96f34b42f299180a31fbb8652cd309fc8e"
+    },
+    "reliability": {
+      "type": "okf-reliability-v1",
+      "confidence": "MEDIUM",
+      "basis": "live-source",
+      "score": 0.8,
+      "sources": 1,
+      "verified": false,
+      "vantage": "producer-reported",
+      "freshness": {
+        "state": "fresh"
+      },
+      "signals": {
+        "signed": true,
+        "corroborated": false,
+        "fresh": true
+      }
+    }
+  }
+}
